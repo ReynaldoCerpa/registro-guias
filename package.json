@@ -34,5 +34,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:ReynaldoCerpa/registro-guias.git",
+  "author": "ReynaldoCerpa <reynaldocerpa07@gmail.com>",
+  "license": "MIT"
 }
