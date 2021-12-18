@@ -1,0 +1,14 @@
+.navbar-container{
+    height: 5rem;
+    width: 100%;
+    background-color: #08406e;
+}
+
+.navbar-items{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 0 0.5rem;
+}
+
