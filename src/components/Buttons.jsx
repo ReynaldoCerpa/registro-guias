@@ -11,10 +11,11 @@ export const NavButton = styled(StyledButton, {})({
 })
 
 export const LoginButton = styled(StyledButton, {})({
+    margin: "1rem",
     height: "2.5rem",
     width: "10rem",
     display: "flex",
     backgroundColor: "#08406e",
     color: "#fff",
-    "&:hover":{backgroundColor: "#ebebeb"}
+    "&:hover":{backgroundColor: "#0c5591"}
 })
