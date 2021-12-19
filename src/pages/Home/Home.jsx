@@ -20,8 +20,10 @@ const Home = () => {
         }
     }
 
-    //SELECT TIMEDIFF('2012-06-07 15:20:18', '2012-06-06 13:13:55');
-    //select timediff(endDate, beginDate);
+    //     USE MYSQL CURDATE() TO REGISTER CHECK-IN TIMES, IT AVOIDS USER SWITCHING COMPUTER'S TIME TO THEIR FAVOUR
+    //SELECT TIMEDIFF('2012-06-07 15:20:18', '2012-06-06 13:13:55') as Horas;
+    //select timediff(endDate, beginDate); --^
+    //select date_format(curdate(), "%d/%c/%Y"); <-- Formats english date to MX date format
     // let time = new Date();
     // let date = new Date();
     // console.log(
