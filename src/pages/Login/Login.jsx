@@ -31,12 +31,22 @@ const Login = () => {
                     error={error}
                     value={username}
                     onInput={e => e.target.value.length < 35 ? setUsername(e.target.value) : username}
+                    onKeyDown={(e)=>{
+                        if (e.key === "Enter") {
+                            handleSubmit(username, password)
+                        }
+                    }}
                     label="Usuario"
                 />
                 <TextField
                     error={error}
                     value={password}
                     onInput={e => e.target.value.length < 35 ? setPassword(e.target.value) : password}
+                    onKeyDown={(e)=>{
+                        if (e.key === "Enter") {
+                            handleSubmit(username, password)
+                        }
+                    }}
                     label="Contraseña"
                     type="password"
                 />

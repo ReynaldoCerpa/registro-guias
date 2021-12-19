@@ -1,0 +1,13 @@
+.lower-label{
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 40%;
+    width: 13rem;
+    text-align: center;
+}
+
+.enter-id-items{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
