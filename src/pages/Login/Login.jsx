@@ -1,4 +1,6 @@
 import "./Login.css"
+import { FaHome } from "react-icons/fa"
+import { useNavigate } from 'react-router-dom'
 import { LoginButton } from "../../components/Buttons"
 import Navbar from "../../components/Navbar/Navbar"
 import { TextField } from "../../components/TextField"
@@ -10,6 +12,7 @@ const Login = () => {
     const [errorMsg, setErrorMsg] = useState("Datos incorrectos")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const nav = useNavigate();
 
     const handleSubmit = (username, password) => {
         setError(false)
@@ -24,7 +27,12 @@ const Login = () => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar Icon={FaHome} text={"INICIO"} 
+            action={() => {
+                nav("/")
+            }}
+            />
+
             <div className="login-items">
                 <h1>Inicie sesión</h1>
                 <TextField

@@ -1,13 +1,23 @@
 import { styled } from "@mui/system"
 import { Button as StyledButton } from "@mui/material"
+import { FiLogOut } from "react-icons/fi"
 
 export const NavButton = styled(StyledButton, {})({
     height: "2.5rem",
-    width: "8rem",
     display: "flex",
     backgroundColor: "#fff",
     color: "#08406e",
     "&:hover":{backgroundColor: "#ebebeb"}
+})
+
+export const SignOutButton = styled(StyledButton, {})({
+    width:"0.5rem"
+})
+
+export const SignOutIcon = styled(FiLogOut, {})({
+    color: "#fff",
+    fontSize: "1.5rem",
+    padding: "0"
 })
 
 export const LoginButton = styled(StyledButton, {})({
