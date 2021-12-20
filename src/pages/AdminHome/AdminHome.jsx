@@ -2,8 +2,30 @@ import "./AdminHome.css"
 import Navbar from "../../components/Navbar/Navbar"
 import { useNavigate } from 'react-router-dom'
 import SideMenu from "../../components/SideMenu/SideMenu";
+import { useState } from "react";
+import RegisterGuia from "./RegisterGuia/RegisterGuia";
 
 const AdminHome = () => {
+
+    const [guias, setGuias] = useState(true)
+    const [generar, setGenerar] = useState(false)
+    const [registrar, setRegistrar] = useState(false)
+
+    function clickGuias(){
+        setGuias(true)
+        setGenerar(false)
+        setRegistrar(false)
+    }
+    function clickGenerar(){
+        setGuias(false)
+        setGenerar(true)
+        setRegistrar(false)
+    }
+    function clickRegistrar(){
+        setGuias(false)
+        setGenerar(false)
+        setRegistrar(true)
+    }
 
     const nav = useNavigate();
 
@@ -15,7 +37,10 @@ const AdminHome = () => {
             }}
             />
             <div className="adminhome-container">
-                <SideMenu/>
+                <SideMenu guias={clickGuias} generar={clickGenerar} registrar={clickRegistrar} />
+                <div className="content-container">
+                    {registrar ? <RegisterGuia/> : null}
+                </div>
             </div>
         </div>
     )

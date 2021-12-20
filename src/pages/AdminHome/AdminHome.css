@@ -1,5 +1,9 @@
 .adminhome-container{
     background-color: #f0f0f0;
     display: flex;
+}
 
+.content-container{
+    margin: 2rem auto;
+    width: 70%;
 }

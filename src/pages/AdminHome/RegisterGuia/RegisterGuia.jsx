@@ -1,8 +1,9 @@
+import "./RegisterGuia.css"
 
 const RegisterGuia = () => {
     return (
-        <div>
-            
+        <div className="register-container">
+          <h1>Hola</h1>
         </div>
     )
 }
