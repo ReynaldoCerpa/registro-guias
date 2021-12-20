@@ -6,3 +6,9 @@ export const TextField = styled(StyledTextField, {})({
     width: "100%",
     maxWidth: "15rem",
 });
+
+export const RegisterTextField = styled(StyledTextField, {})({
+    margin: "0.5rem",
+    width: "100%",
+    maxWidth: "20rem",
+});
