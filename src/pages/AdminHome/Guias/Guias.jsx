@@ -1,3 +1,4 @@
+import "./Guias.css"
 import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
@@ -19,45 +20,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { guias } from "./getAllGuias";
 
-function createData(name, calories, fat, carbs, protein) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -68,25 +32,25 @@ const headCells = [
   },
   {
     id: 'idGuia',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'ID',
   },
   {
     id: 'fechaNacimiento',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Fecha de nacimiento',
   },
   {
     id: 'turno',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Turno',
   },
   {
     id: 'servicio',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Servicio',
   },
@@ -98,18 +62,15 @@ const headCells = [
   },
   {
     id: 'genero',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Género',
   },
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { onSelectAllClick, numSelected, rowCount } =
     props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
 
   return (
     <TableHead>
@@ -130,7 +91,6 @@ function EnhancedTableHead(props) {
             key={headCell.id}
             align="left"
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.label}
           </TableCell>
@@ -142,10 +102,7 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
@@ -205,14 +162,12 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const Guias = () => {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('prestador');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(true);
   const [rows, setRows] = useState([])
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loadingData, setLoadingData] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   
   useEffect(() => {
     async function getData() {
@@ -224,12 +179,6 @@ const Guias = () => {
         getData();
     }
   }, [])
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -269,10 +218,6 @@ const Guias = () => {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -283,25 +228,32 @@ const Guias = () => {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
+            <input type="text" 
+            onChange={(e)=>{setSearchTerm(e.target.value)}}
+            />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size="small"
           >
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {rows.filter((val)=>{
+                  if (searchTerm == "") {
+                      return val
+                  } else if(
+                      val.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+                  ){
+                      return val
+                  }
+              }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.idGuia);
                   const labelId = `enhanced-table-checkbox-${index}`;
@@ -345,7 +297,7 @@ const Guias = () => {
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 33 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -355,7 +307,7 @@ const Guias = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10]}
+          rowsPerPageOptions={[2, 5, 10]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
