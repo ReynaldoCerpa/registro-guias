@@ -5,6 +5,11 @@
     margin: 0;
 }
 
+.sidemenu-container p{
+    font-weight: 700;
+    color: #08406e;
+}
+
 .list-item{
     cursor: pointer;
     margin: 0;

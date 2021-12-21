@@ -1,12 +1,14 @@
 import { RegisterTextField } from "../../../components/TextField"
 import { RegisterGuiaButton } from "../../../components/Buttons"
-import { MenuItem, TextField } from "@mui/material"
+import { MenuItem } from "@mui/material"
+import { Alert, Zoom } from "@mui/material"
 import "./RegisterGuia.css"
 import { useState } from "react"
 import Select from "../../../components/Select"
 
 const RegisterGuia = () => {
 
+    const [error, setError] = useState(false)
     const [primerNombre, setPrimerNombre] = useState("");
     const [segundoNombre, setSegundoNombre] = useState("");
     const [apellidoPaterno, setApellidoPaterno] = useState("");
@@ -21,6 +23,14 @@ const RegisterGuia = () => {
     const handleServicio = (e) => setServicio(e.target.value);
     const handleGenero = (e) => setGenero(e.target.value);
 
+    const handleRegistrar = () => {
+        if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "") {
+            setError(true)
+        } else {
+            setError(false)
+        }
+    }
+
     return (
         <div className="register-container">
             <div className="register-items">
@@ -28,6 +38,7 @@ const RegisterGuia = () => {
                 <form>
                     <div className="textInput-items">
                         <RegisterTextField
+                            error={error}
                             autoComplete="off"
                             value={primerNombre}
                             onInput={(e)=>setPrimerNombre(e.target.value)}
@@ -40,12 +51,14 @@ const RegisterGuia = () => {
                             label="Segundo nombre (Opcional)"
                         />
                         <RegisterTextField
+                            error={error}
                             autoComplete="off"
                             value={apellidoPaterno}
                             onInput={(e)=>setApellidoPaterno(e.target.value)}
                             label="Apellido paterno"
                         />
                         <RegisterTextField
+                            error={error}
                             autoComplete="off"
                             value={apellidoMaterno}
                             onInput={(e)=>setApellidoMaterno(e.target.value)}
@@ -54,6 +67,7 @@ const RegisterGuia = () => {
                     </div>
                     <div className="select-items">
                         <Select
+                        error={error}
                             title="Prestación"
                             width="8rem"
                             value={prestacion}
@@ -65,6 +79,7 @@ const RegisterGuia = () => {
                             ]}
                         />
                         <Select
+                        error={error}
                             title="Turno"
                             width="8rem"
                             value={turno}
@@ -77,6 +92,7 @@ const RegisterGuia = () => {
                     </div>
                     <div className="select-items">
                         <Select
+                        error={error}
                             title="Servicio"
                             width="8rem"
                             value={servicio}
@@ -88,6 +104,7 @@ const RegisterGuia = () => {
                             ]}
                         />
                         <Select
+                        error={error}
                             title="Género"
                             width="8rem"
                             value={genero}
@@ -99,7 +116,19 @@ const RegisterGuia = () => {
                         />
                     </div>
                 </form>
-                <RegisterGuiaButton>
+                {error ?
+                    <Zoom in={error}>
+                    {
+                        <Alert severity="error">
+                        Todos los campos son obligatorios
+                        </Alert>
+                    }
+                    </Zoom>
+                    : ""
+                }
+                <RegisterGuiaButton
+                onClick={handleRegistrar}
+                >
                     Registrar
                 </RegisterGuiaButton>
             </div>

@@ -4,5 +4,5 @@ import { styled } from "@mui/system"
 export const LinkItem = styled(Link, {})({
     textDecoration: "none",
     color: "black",
-    fontWeight: "400"
+    fontWeight: "700"
 })
