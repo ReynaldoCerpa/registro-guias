@@ -47,7 +47,6 @@
   "author": "ReynaldoCerpa <reynaldocerpa07@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "dotenv": "^10.0.0",
     "react-icons": "^4.3.1"
   }
 }
