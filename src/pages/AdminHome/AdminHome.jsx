@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState } from "react";
 import RegisterGuia from "./RegisterGuia/RegisterGuia";
+import Guias from "./Guias/Guias";
 
 const AdminHome = () => {
 
@@ -39,6 +40,7 @@ const AdminHome = () => {
             <div className="adminhome-container">
                 <SideMenu guias={clickGuias} generar={clickGenerar} registrar={clickRegistrar} />
                 <div className="content-container">
+                    {guias ? <Guias/> : null}
                     {registrar ? <RegisterGuia/> : null}
                 </div>
             </div>

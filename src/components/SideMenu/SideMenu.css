@@ -15,8 +15,9 @@
     margin: 0;
     line-height: 2.5rem;
     padding-left: 15px;
+    transition: background-color 0.1s;
 }
 
-.list-item:active{
+.list-item:active, .list-item:hover{
     background-color: #f0f0f0;
 }

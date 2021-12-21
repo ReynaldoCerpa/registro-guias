@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@material-ui/core": "^4.12.3",
+    "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.4",
     "@mui/styled-engine-sc": "^5.1.0",
     "@testing-library/jest-dom": "^5.16.1",
@@ -19,10 +19,10 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "set PORT=4000 && react-scripts start",
+    "build": "set PORT=4000 && react-scripts build",
+    "test": "set PORT=4000 && react-scripts test",
+    "eject": "set PORT=4000 && react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

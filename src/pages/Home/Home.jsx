@@ -24,6 +24,7 @@ const Home = () => {
 
     //     USE MYSQL CURDATE() TO REGISTER CHECK-IN TIMES, IT AVOIDS USER SWITCHING COMPUTER'S TIME TO THEIR FAVOUR
     //SELECT TIMEDIFF('2012-06-07 15:20:18', '2012-06-06 13:13:55') as Horas;
+    //SELECT TIMESTAMPDIFF(hour, '2012-06-06 13:13:55', '2012-06-07 15:20:18') as Horas;
     //select timediff(endDate, beginDate); --^
     //select date_format(fechaNacimiento, "%d/%m/%Y") as "Fecha de nacimiento" from guia;  --> output: 07/09/2000
     // let time = new Date();
@@ -48,7 +49,7 @@ const Home = () => {
                     label="ID"
                     value={id}
                     onInput={e => {
-                        if (!regex.test(e.target.value) && e.target.value.length < 15) {
+                        if (!regex.test(e.target.value) && e.target.value.length < 15 && e.target.value.indexOf(" ") === -1) {
                             setId(e.target.value.toUpperCase())
                         }
                     }}
