@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -9,18 +9,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
+import { guias } from "./getAllGuias";
 
 function createData(name, calories, fat, carbs, protein) {
   return {
@@ -31,8 +28,6 @@ function createData(name, calories, fat, carbs, protein) {
     protein,
   };
 }
-
-const rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -209,13 +204,26 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function Guias() {
+const Guias = () => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('prestador');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
+  const [rows, setRows] = useState([])
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [loadingData, setLoadingData] = useState(true);
+  
+  useEffect(() => {
+    async function getData() {
+        console.log("Req. guias: ", await guias());
+        setRows(await guias())
+        setLoadingData(false)
+    }
+    if(loadingData){
+        getData();
+    }
+  }, [])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -225,7 +233,7 @@ export default function Guias() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.idGuia);
       setSelected(newSelecteds);
       return;
     }
@@ -295,17 +303,16 @@ export default function Guias() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.idGuia);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.idGuia)}
                       role="checkbox"
                       aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
+                      key={row.idGuia}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -316,6 +323,7 @@ export default function Guias() {
                             'aria-labelledby': labelId,
                           }}
                         />
+
                       </TableCell>
                       <TableCell
                         component="th"
@@ -323,12 +331,14 @@ export default function Guias() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.nombre}
                       </TableCell>
-                      <TableCell align="left">{row.calories}</TableCell>
-                      <TableCell align="left">{row.fat}</TableCell>
-                      <TableCell align="left">{row.carbs}</TableCell>
-                      <TableCell align="left">{row.protein}</TableCell>
+                      <TableCell align="left">{row.idGuia}</TableCell>
+                      <TableCell align="left">{row.fechaNacimiento}</TableCell>
+                      <TableCell align="left">{row.turno}</TableCell>
+                      <TableCell align="left">{row.servicio}</TableCell>
+                      <TableCell align="left">{row.horasRealizadas}</TableCell>
+                      <TableCell align="left">{row.genero}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -357,3 +367,4 @@ export default function Guias() {
     </Box>
   );
 }
+export default Guias
