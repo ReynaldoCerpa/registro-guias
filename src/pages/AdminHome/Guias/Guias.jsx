@@ -228,9 +228,16 @@ const Guias = () => {
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
-            <input type="text" 
-            onChange={(e)=>{setSearchTerm(e.target.value)}}
-            />
+        <div className="toolbar-tools-container">
+            <div className="searchInput-guias-items">
+                <h5>Buscar:</h5>
+                <input 
+                type="text"
+                placeholder="Ingrese dato del guía"
+                onInput={(e)=>{setSearchTerm(e.target.value)}}
+                />
+            </div>
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -249,7 +256,13 @@ const Guias = () => {
                   if (searchTerm == "") {
                       return val
                   } else if(
-                      val.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+                      val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      val.genero.toLowerCase().includes(searchTerm.toLowerCase())
                   ){
                       return val
                   }
@@ -300,16 +313,17 @@ const Guias = () => {
                     height: 33 * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={8} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[2, 5, 10]}
+          rowsPerPageOptions={[3, 5, 10]}
           component="div"
           count={rows.length}
+          labelRowsPerPage={"Filas por página:"}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

@@ -1,0 +1,28 @@
+.toolbar-tools-container{
+    margin-top: 0.5rem;
+}
+
+.searchInput-guias-items{
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    margin: 0rem 0 0.5rem 1rem;
+}
+
+.searchInput-guias-items h5{
+    margin: 0 0.5rem 0 0;
+}
+
+.searchInput-guias-items input{
+    border: none;
+    background-color: #e4e4e4;
+    height: 0.7rem;
+    max-width: 15rem;
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.searchInput-guias-items input:focus{
+    outline: none;
+}
