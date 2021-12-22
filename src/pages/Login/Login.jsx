@@ -7,9 +7,7 @@ import { TextField } from "../../components/TextField"
 import { useState } from "react"
 import { Alert, Zoom } from "@mui/material"
 import {logIn} from '../../db-conn/login';
-import Cookies from "universal-cookie"
 
-const cookie = new Cookies();
 const Login = () => {
     const [error, setError] = useState(false)
     const [errorMsg, setErrorMsg] = useState("Datos incorrectos")
@@ -29,7 +27,6 @@ const Login = () => {
         const response = await logIn(username, password)
         if (response == null) console.log("No se pudo iniciar sesion")
         else{
-            cookie.set("user", `${response}`) 
             nav("/adminHome")
             
         }
