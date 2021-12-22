@@ -6,7 +6,10 @@ import Navbar from "../../components/Navbar/Navbar"
 import { TextField } from "../../components/TextField"
 import { useState } from "react"
 import { Alert, Zoom } from "@mui/material"
+import {logIn} from '../../db-conn/login';
+import Cookies from "universal-cookie"
 
+const cookie = new Cookies();
 const Login = () => {
     const [error, setError] = useState(false)
     const [errorMsg, setErrorMsg] = useState("Datos incorrectos")
@@ -14,7 +17,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const nav = useNavigate();
 
-    const handleSubmit = (username, password) => {
+    const handleSubmit = async (username, password) => {
         setError(false)
         if (username.length > 35 || password.length > 35) {
             setError(true)
@@ -22,6 +25,13 @@ const Login = () => {
         if (username.length === 0 || password.length === 0) {
             setErrorMsg("Ambos campos son obligatorios")
             setError(true)
+        }
+        const response = await logIn(username, password)
+        if (response == null) console.log("No se pudo iniciar sesion")
+        else{
+            cookie.set("user", `${response}`) 
+            nav("/adminHome")
+            
         }
     }
 
