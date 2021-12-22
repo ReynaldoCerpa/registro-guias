@@ -5,6 +5,7 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState } from "react";
 import RegisterGuia from "./RegisterGuia/RegisterGuia";
 import Guias from "./Guias/Guias";
+import Reportes from "./Reporte/Reportes";
 
 const AdminHome = () => {
 
@@ -41,6 +42,7 @@ const AdminHome = () => {
                 <SideMenu guias={clickGuias} generar={clickGenerar} registrar={clickRegistrar} />
                 <div className="content-container">
                     {guias ? <Guias/> : null}
+                    {generar ? <Reportes/> : null}
                     {registrar ? <RegisterGuia/> : null}
                 </div>
             </div>
