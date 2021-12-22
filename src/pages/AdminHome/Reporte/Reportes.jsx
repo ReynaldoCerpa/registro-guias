@@ -35,6 +35,7 @@ const Reportes = () => {
                     <div className="refresh-table-button">
                         <FiRefreshCcw
                             onClick={async()=>{
+                                setRows([])
                                 setRows(await reports())
                             }}
                         />
