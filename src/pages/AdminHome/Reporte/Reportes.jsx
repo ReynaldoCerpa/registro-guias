@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { reports } from "./getDailyReports";
 import Tooltip from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
@@ -30,7 +31,13 @@ const Reportes = () => {
       <div className="reportes-container">
         <div className="data-table">
             <div className="reportes-tools-container">
-                <h3>Registros del día</h3>
+            <Typography
+                variant="h6"
+                id="tableTitle"
+                component="div"
+            >
+                Registros del día
+            </Typography>
                 <Tooltip title="Refrescar tabla" placement="right" arrow>
                     <div className="refresh-table-button">
                         <FiRefreshCcw

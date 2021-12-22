@@ -169,7 +169,6 @@ const Guias = () => {
   
   useEffect(() => {
     async function getData() {
-        console.log("Req. guias: ", await guias());
         setRows(await guias())
         setLoadingData(false)
     }

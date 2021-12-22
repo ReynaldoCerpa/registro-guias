@@ -5,6 +5,7 @@ import { Alert, Zoom } from "@mui/material"
 import { useState } from "react"
 import Navbar from "../../components/Navbar/Navbar"
 import { TextField } from "../../components/TextField"
+import { checkTime } from "./checkTime"
 
 const Home = () => {
 
@@ -23,6 +24,7 @@ const Home = () => {
         } else{
             setDisabled(true)
             if (!disabled) {
+                checkTime(id)
                 console.log("se mandaron ",id);
             }
             setTimeout(() => {
@@ -50,7 +52,6 @@ const Home = () => {
                 <TextField
                     error={error}
                     autoComplete="off"
-                    focused
                     label="ID"
                     disabled={disabled}
                     value={id}

@@ -3,8 +3,9 @@ import { RegisterGuiaButton } from "../../../components/Buttons"
 import { MenuItem } from "@mui/material"
 import { Alert, Zoom } from "@mui/material"
 import "./RegisterGuia.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Select from "../../../components/Select"
+import { guias } from "../Guias/getAllGuias"
 
 const RegisterGuia = () => {
 
@@ -18,12 +19,28 @@ const RegisterGuia = () => {
     const [turno, setTurno] = useState("");
     const [servicio, setServicio] = useState("");
     const [genero, setGenero] = useState("");
+    const [data, setData] = useState([])
+    const [generatedID, setGeneratedID] = useState("")
     const regex = /^\d*\.?\d*$/;
 
     const handlePrestacion = (e) => setPrestacion(e.target.value);
     const handleTurno = (e) => setTurno(e.target.value);
     const handleServicio = (e) => setServicio(e.target.value);
     const handleGenero = (e) => setGenero(e.target.value);
+
+    useEffect(() => {
+        async function getData() {
+            setData(await guias())
+        }
+        getData();
+      }, [])
+
+    const generateId = async (a,b,c) => {
+        const id = data[data.length-1].idGuia;
+        const number = parseInt(id.substring(3)); 
+        const finalID = a.charAt(0).toUpperCase()+b.charAt(0).toUpperCase()+c.charAt(0).toUpperCase()+number;
+        return finalID
+    }
 
     const handleRegistrar = () => {
         if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "" || horasRealizadas === "" || horasRealizadas === "." ) {
@@ -33,6 +50,7 @@ const RegisterGuia = () => {
                 setHorasRealizadas(horasRealizadas.slice(0, -1))
             }
             setError(false)
+            //setGeneratedID(generateId(primerNombre,apellidoPaterno,apellidoMaterno))
         }
     }
 
@@ -136,14 +154,18 @@ const RegisterGuia = () => {
                     <Zoom in={error}>
                     {
                         <Alert severity="error">
-                        Todos los campos son obligatorios
+                            Rellene los campos obligatorios
                         </Alert>
                     }
                     </Zoom>
                     : ""
                 }
                 <RegisterGuiaButton
-                onClick={handleRegistrar}
+                    onClick={()=>{
+                        handleRegistrar()
+                        setGeneratedID("ASD4")
+                        console.log("ID",generatedID);
+                    }}
                 >
                     Registrar
                 </RegisterGuiaButton>
@@ -151,19 +173,5 @@ const RegisterGuia = () => {
         </div>
     )
 }
-
-{/* 
-<TextField
-    error={error}
-    value={username}
-    onInput={e => e.target.value.length < 35 ? setUsername(e.target.value) : username}
-    onKeyDown={(e)=>{
-        if (e.key === "Enter") {
-            handleSubmit(username, password)
-        }
-    }}
-    label="Usuario"
-/> 
-*/}
 
 export default RegisterGuia
