@@ -29,14 +29,14 @@ const Reportes = () => {
   return (
       <div className="reportes-container">
         <div className="data-table">
-            <div>
+            <div className="reportes-tools-container">
                 <h3>Registros del día</h3>
-                <Tooltip title="Refrescar tabla" placement="left" arrow>
+                <Tooltip title="Refrescar tabla" placement="right" arrow>
                     <div className="refresh-table-button">
                         <FiRefreshCcw
-                        onClick={async()=>{
-                            setRows(await reports())
-                        }}
+                            onClick={async()=>{
+                                setRows(await reports())
+                            }}
                         />
                     </div>
                 </Tooltip>
