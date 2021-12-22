@@ -9,10 +9,9 @@ export const logIn = async ( username, password ) => {
   }
   const response = await fetch(`${process.env.REACT_APP_URL}`+'auth/login', logInRequestOptions)
                               .then(response => response.json())
-                              .then(data => token = data)
-  console.log(token);
+                              .then(data => token = data.token)
   if(token.includes("No")){
     return "No hay usuario con estos datos"
   }
-  return await token;
+  return token
 };

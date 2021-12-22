@@ -27,8 +27,8 @@ const Login = () => {
         const response = await logIn(username, password)
         if (response == null) console.log("No se pudo iniciar sesion")
         else{
+            localStorage.setItem("token", response)
             nav("/adminHome")
-            
         }
     }
 

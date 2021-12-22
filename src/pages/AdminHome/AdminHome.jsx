@@ -2,10 +2,11 @@ import "./AdminHome.css"
 import Navbar from "../../components/Navbar/Navbar"
 import { useNavigate } from 'react-router-dom'
 import SideMenu from "../../components/SideMenu/SideMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RegisterGuia from "./RegisterGuia/RegisterGuia";
 import Guias from "./Guias/Guias";
 import Reportes from "./Reporte/Reportes";
+import {logOut} from "../../db-conn/logout";
 
 const AdminHome = () => {
 
@@ -30,12 +31,27 @@ const AdminHome = () => {
     }
 
     const nav = useNavigate();
+    useEffect(() => {
+        let mounted = true;
+        if(mounted){
+            const token = localStorage.getItem("token");
+            if(token){
+                
+            }
+            else{
+                nav('/');
+            }
+        }
+        return () => {mounted = false
+        }
+    }, []);
 
     return (
         <div>
             <Navbar isAdminPage={true}
             action={()=>{
-                nav("/")
+              logOut()
+              nav("/")
             }}
             />
             <div className="adminhome-container">
