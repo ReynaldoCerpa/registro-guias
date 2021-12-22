@@ -15,9 +15,9 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import Tooltip from '@mui/material/Tooltip';
+import { FiRefreshCcw } from "react-icons/fi"
 import { guias } from "./getAllGuias";
 import { AddHorasButton } from "../../../components/Buttons";
 
@@ -238,6 +238,15 @@ const Guias = () => {
                 placeholder="Ingrese dato del guía"
                 onInput={(e)=>{setSearchTerm(e.target.value)}}
                 />
+                <Tooltip title="Refrescar tabla" placement="right" arrow>
+                    <div className="refresh-table-button">
+                        <FiRefreshCcw
+                        onClick={async()=>{
+                            setRows(await guias())
+                        }}
+                        />
+                    </div>
+                </Tooltip>
             </div>
             <AddHorasButton
             onClick={handleAgregarHoras}

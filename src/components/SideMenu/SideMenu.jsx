@@ -14,7 +14,7 @@ const SideMenu = ({guias,generar,registrar}) => {
                 onClick={()=>{
                     generar()
                 }}
-                >Generar reporte</p>
+                >Reportes</p>
             
                 <p className="list-item"
                 onClick={()=>{
