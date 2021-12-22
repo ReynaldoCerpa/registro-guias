@@ -8,14 +8,46 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Checkbox from '@mui/material/Checkbox';
 import { reports } from "./getDailyReports";
 import Tooltip from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
+import { ReportButton } from "../../../components/Buttons";
 
 const Reportes = () => {
 
     const [rows, setRows] = useState([])
     const [loadingData, setLoadingData] = useState(true);
+    const [day, setDay] = useState(false);
+    const [month, setMonth] = useState(false);
+    const [year, setYear] = useState(false);
+    const [checked, setChecked] = useState(null);
+    const [buttonTitle, setButtonTitle] = useState("")
+
+    const handleDay = () => {
+        setDay(!day);
+        setMonth(false);
+        setYear(false);
+        !day ? setChecked("day") : setChecked(null);
+        setButtonTitle("del Día")
+    }
+
+    const handleMonth = () => {
+        setDay(false);
+        setMonth(!month);
+        setYear(false);
+        !month ? setChecked("month") : setChecked(null);
+        setButtonTitle("del Mes")
+    }
+
+    const handleYear = () => {
+        setDay(false);
+        setMonth(false);
+        setYear(!year);
+        !year ? setChecked("year") : setChecked(null);
+        setButtonTitle("del Año")
+    }
+
 
     useEffect(() => {
         async function getData() {
@@ -29,6 +61,45 @@ const Reportes = () => {
 
   return (
       <div className="reportes-container">
+          <div className="generar-reportes-container">
+          <Typography
+                variant="h6"
+                id="tableTitle"
+                component="div"
+            >
+                Generar reporte estadístico
+            </Typography>
+            <div className="generar-reporte-controls-container">
+                <div className="reportes-checkboxes">
+                    <Checkbox
+                        color="primary"
+                        checked={day}
+                        onClick={handleDay}
+                    />
+                    <h4>Día</h4>
+                    <Checkbox
+                        sx={{margin: 0}}
+                        color="primary"
+                        checked={month}
+                        onClick={handleMonth}
+                    />
+                    <h4>Mes</h4>
+                    <Checkbox
+                        color="primary"
+                        checked={year}
+                        onClick={handleYear}
+                    />
+                    <h4>Año</h4>
+                </div>
+                <ReportButton
+                onClick={()=>{
+                    console.log(checked)
+                }}
+                >
+                    Generar reporte {day || month || year ? buttonTitle : ""}
+                </ReportButton>
+            </div>
+          </div>
         <div className="data-table">
             <div className="reportes-tools-container">
             <Typography
@@ -66,7 +137,7 @@ const Reportes = () => {
                 >
                 {rows.map((row) => (
                     <TableRow
-                    key={row.idGuia}
+                    key={row.entrada}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                     <TableCell component="th" scope="row">

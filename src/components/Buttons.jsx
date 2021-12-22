@@ -50,3 +50,15 @@ export const AddHorasButton = styled(StyledButton, {})({
     color: "#fff",
     "&:hover":{backgroundColor: "#0c5591"}
 })
+
+export const ReportButton = styled(StyledButton, {})({
+    marginRight: "1rem",
+    padding: "0.5rem",
+    lineHeight: "0.9rem",
+    width: "9rem",
+    display: "flex",
+    fontSize: "0.8rem",
+    backgroundColor: "#08406e",
+    color: "#fff",
+    "&:hover":{backgroundColor: "#0c5591"}
+})

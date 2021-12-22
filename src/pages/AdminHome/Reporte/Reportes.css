@@ -8,7 +8,7 @@
 
 .data-table{
     margin: auto;
-    max-width: 45rem;
+    max-width: 50rem;
     display: flex;
     flex-direction: column;
 }
@@ -21,4 +21,21 @@
 
 .reportes-tools-container h3{
     margin-right: 0.3rem;
+}
+
+.generar-reportes-container{
+    height: 6rem;
+    margin: 0 auto;
+    max-width: 50rem;
+}
+
+.generar-reporte-controls-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reportes-checkboxes{
+    display: flex;
+
 }

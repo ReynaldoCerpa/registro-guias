@@ -6,7 +6,7 @@ import Navbar from "../../components/Navbar/Navbar"
 import { TextField } from "../../components/TextField"
 import { useState } from "react"
 import { Alert, Zoom } from "@mui/material"
-import {logIn} from '../../db-conn/login';
+import { logIn } from '../../db-conn/login';
 
 const Login = () => {
     const [error, setError] = useState(false)

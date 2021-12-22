@@ -1,9 +1,10 @@
+import { headers } from "../../config/headers";
 
 export const logIn = async ( username, password ) => {
   let token = '';
   const logInRequestOptions = {
     method: "POST",
-    headers: { 'Content-Type': 'application/json' },
+    headers: headers,
     body: JSON.stringify({ username: username, 
                            password: password})
   }
