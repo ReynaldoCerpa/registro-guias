@@ -12,6 +12,7 @@ const Home = () => {
     const [error, setError] = useState(false)
     const [errorMsg, setErrorMsg] = useState("Datos incorrectos")
     const [id, setId] = useState("")
+    const [disabled, setDisabled]  = useState(false)
     const nav = useNavigate();
 
     const handleSubmit = (id) => {
@@ -19,6 +20,14 @@ const Home = () => {
         if (id === "" || id.length > 20) {
             setError(true)
             setErrorMsg("Ingrese ID válido")
+        } else{
+            setDisabled(true)
+            if (!disabled) {
+                console.log("se mandaron ",id);
+            }
+            setTimeout(() => {
+                setDisabled(false)
+            }, 1000);
         }
     }
     
@@ -41,7 +50,9 @@ const Home = () => {
                 <TextField
                     error={error}
                     autoComplete="off"
+                    focused
                     label="ID"
+                    disabled={disabled}
                     value={id}
                     onInput={e => {
                         if (!regex.test(e.target.value) && e.target.value.length < 15 && e.target.value.indexOf(" ") === -1) {

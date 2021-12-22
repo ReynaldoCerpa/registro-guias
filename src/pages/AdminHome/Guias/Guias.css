@@ -1,12 +1,15 @@
 .toolbar-tools-container{
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .searchInput-guias-items{
     height: 1.5rem;
     display: flex;
     align-items: center;
-    margin: 0rem 0 0.5rem 1rem;
+    margin-left: 1rem;
 }
 
 .searchInput-guias-items h5{
@@ -19,10 +22,16 @@
     height: 0.7rem;
     max-width: 15rem;
     width: 100%;
-    padding: 8px;
+    padding: 9px;
     border-radius: 5px;
 }
 
 .searchInput-guias-items input:focus{
     outline: none;
+}
+
+.checkbox-container{
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
 }

@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { guias } from "./getAllGuias";
+import { AddHorasButton } from "../../../components/Buttons";
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
@@ -147,11 +148,7 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        null
       )}
     </Toolbar>
   );
@@ -168,6 +165,7 @@ const Guias = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loadingData, setLoadingData] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [hasValues, setHasValues] = useState(false);
   
   useEffect(() => {
     async function getData() {
@@ -218,6 +216,10 @@ const Guias = () => {
     setPage(0);
   };
 
+  const handleAgregarHoras = () => {
+    //Final ID system needed
+  }
+
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -237,6 +239,9 @@ const Guias = () => {
                 onInput={(e)=>{setSearchTerm(e.target.value)}}
                 />
             </div>
+            <AddHorasButton
+            onClick={handleAgregarHoras}
+            >Agregar horas</AddHorasButton>
         </div>
         <TableContainer>
           <Table
@@ -250,8 +255,6 @@ const Guias = () => {
               rowCount={rows.length}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
               {rows.filter((val)=>{
                   if (searchTerm == "") {
                       return val

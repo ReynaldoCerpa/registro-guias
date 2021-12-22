@@ -39,3 +39,14 @@ export const RegisterGuiaButton = styled(StyledButton, {})({
     color: "#fff",
     "&:hover":{backgroundColor: "#0c5591"}
 })
+
+export const AddHorasButton = styled(StyledButton, {})({
+    marginRight: "1rem",
+    height: "2rem",
+    width: "9rem",
+    display: "flex",
+    fontSize: "0.8rem",
+    backgroundColor: "#08406e",
+    color: "#fff",
+    "&:hover":{backgroundColor: "#0c5591"}
+})

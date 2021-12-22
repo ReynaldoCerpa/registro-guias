@@ -13,10 +13,12 @@ const RegisterGuia = () => {
     const [segundoNombre, setSegundoNombre] = useState("");
     const [apellidoPaterno, setApellidoPaterno] = useState("");
     const [apellidoMaterno, setApellidoMaterno] = useState("");
+    const [horasRealizadas, setHorasRealizadas] = useState("");
     const [prestacion, setPrestacion] = useState("");
     const [turno, setTurno] = useState("");
     const [servicio, setServicio] = useState("");
     const [genero, setGenero] = useState("");
+    const regex = /^\d*\.?\d*$/;
 
     const handlePrestacion = (e) => setPrestacion(e.target.value);
     const handleTurno = (e) => setTurno(e.target.value);
@@ -24,9 +26,12 @@ const RegisterGuia = () => {
     const handleGenero = (e) => setGenero(e.target.value);
 
     const handleRegistrar = () => {
-        if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "") {
+        if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "" || horasRealizadas === "" || horasRealizadas === "." ) {
             setError(true)
         } else {
+            if (horasRealizadas.indexOf(".") === horasRealizadas.length-1) {
+                setHorasRealizadas(horasRealizadas.slice(0, -1))
+            }
             setError(false)
         }
     }
@@ -63,6 +68,17 @@ const RegisterGuia = () => {
                             value={apellidoMaterno}
                             onInput={(e)=>setApellidoMaterno(e.target.value)}
                             label="Apellido materno"
+                        />
+                        <RegisterTextField
+                            error={error}
+                            autoComplete="off"
+                            value={horasRealizadas}
+                            onInput={(e)=>{
+                            if (regex.test(e.target.value)) {
+                                setHorasRealizadas(e.target.value)
+                            }
+                            }}
+                            label="Horas realizadas"
                         />
                     </div>
                     <div className="select-items">
