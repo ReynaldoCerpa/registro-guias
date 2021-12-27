@@ -16,29 +16,25 @@ const Home = () => {
     const [disabled, setDisabled]  = useState(false)
     const nav = useNavigate();
 
-    const handleSubmit = (id) => {
+    const handleSubmit = async (id) => {
         setError(false)
         if (id === "" || id.length > 20) {
             setError(true)
             setErrorMsg("Ingrese ID válido")
-        } else{
+        } else {
             setDisabled(true)
             if (!disabled) {
-                checkTime(id)
-                console.log("se mandaron ",id);
+                let msg = await checkTime(id)
+                if (!msg[0]) {
+                    
+                }
+                console.log("msg: ",msg);
             }
             setTimeout(() => {
-                setDisabled(false)
+                setDisabled(false) //prevents user spamming ids
             }, 1000);
         }
     }
-    
-    // let time = new Date();
-    // let date = new Date();
-    // console.log(
-    //     date.toLocaleDateString('es-MX'),
-    //     time.toLocaleString('es-MX', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false })
-    // );
 
     return (
         <div>

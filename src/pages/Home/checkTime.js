@@ -10,6 +10,12 @@ export const checkTime = async (id) => {
           body: JSON.stringify(values)
         }
       );
-      const data = await response.json();
-      return data[0];
+      if(response.ok){
+        const data = await response.json();
+        return [response.ok,data];
+      } else {
+        const data = await response.json();
+        return [response.ok,data];
+      }
+      
 }
