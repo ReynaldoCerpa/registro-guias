@@ -35,11 +35,8 @@ const AdminHome = () => {
         let mounted = true;
         if(mounted){
             const token = localStorage.getItem("token");
-            if(token){
-                
-            }
-            else{
-                nav('/');
+            if(!token){
+                nav('/login');
             }
         }
         return () => {mounted = false
