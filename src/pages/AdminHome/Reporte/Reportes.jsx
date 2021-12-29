@@ -77,7 +77,7 @@ const Reportes = () => {
                         </ReportButton>
                     }
                         filename={dayTitle}>
-                        <ExcelSheet data={day} name="datos">
+                        <ExcelSheet data={day} name={dayTitle}>
                             <ExcelColumn label="Mayores de edad" value="mayores" />
                             <ExcelColumn label="Menores de edad" value="menores" />
                             <ExcelColumn label="Total" value="total" />
@@ -100,7 +100,7 @@ const Reportes = () => {
                         </ReportButton>
                     }
                         filename={monthTitle}>
-                        <ExcelSheet data={month} name="datos">
+                        <ExcelSheet data={month} name={monthTitle}>
                             <ExcelColumn label="Mayores de edad" value="mayores" />
                             <ExcelColumn label="Menores de edad" value="menores" />
                             <ExcelColumn label="Total" value="total" />
@@ -123,7 +123,7 @@ const Reportes = () => {
                         </ReportButton>
                     }
                         filename={yearTitle}>
-                        <ExcelSheet data={year} name="datos">
+                        <ExcelSheet data={year} name={yearTitle}>
                             <ExcelColumn label="Mayores de edad" value="mayores" />
                             <ExcelColumn label="Menores de edad" value="menores" />
                             <ExcelColumn label="Total" value="total" />

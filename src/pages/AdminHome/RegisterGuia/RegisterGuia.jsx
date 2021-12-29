@@ -6,6 +6,7 @@ import "./RegisterGuia.css"
 import { useState, useEffect } from "react"
 import Select from "../../../components/Select"
 import { guias } from "../../../db-conn/guides/getAllGuias"
+import { registerNewGuide } from "../../../db-conn/guides/registerGuide"
 
 const RegisterGuia = () => {
 
@@ -35,14 +36,14 @@ const RegisterGuia = () => {
         getData();
       }, [])
 
-    const generateId = async (a,b,c) => {
+    const generateId = (a,b,c) => {
         const id = data[data.length-1].idGuia;
         const number = parseInt(id.substring(3)); 
-        const finalID = a.charAt(0).toUpperCase()+b.charAt(0).toUpperCase()+c.charAt(0).toUpperCase()+number;
+        const finalID = a.charAt(0).toUpperCase()+b.charAt(0).toUpperCase()+c.charAt(0).toUpperCase()+(number+1);
         return finalID
     }
 
-    const handleRegistrar = () => {
+    const handleRegistrar = async () => {
         if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "" || horasRealizadas === "" || horasRealizadas === "." ) {
             setError(true)
         } else {
@@ -50,7 +51,10 @@ const RegisterGuia = () => {
                 setHorasRealizadas(horasRealizadas.slice(0, -1))
             }
             setError(false)
-            //setGeneratedID(generateId(primerNombre,apellidoPaterno,apellidoMaterno))
+            let id = generateId(primerNombre,apellidoPaterno,apellidoMaterno)
+
+            const result = await registerNewGuide(id, primerNombre, segundoNombre, apellidoPaterno, apellidoMaterno, prestacion, "2006-09-09", turno, servicio, horasRealizadas, genero)
+            console.log(result);
         }
     }
 
@@ -163,8 +167,6 @@ const RegisterGuia = () => {
                 <RegisterGuiaButton
                     onClick={()=>{
                         handleRegistrar()
-                        setGeneratedID("ASD4")
-                        console.log("ID",generatedID);
                     }}
                 >
                     Registrar
