@@ -22,33 +22,36 @@ const ExcelColumn = ExportExcel.ExcelColumn;
 
 const Reportes = () => {
 
+    //     USE MYSQL CURDATE() TO REGISTER CHECK-IN TIMES, IT AVOIDS USER SWITCHING COMPUTER'S TIME TO THEIR FAVOUR
+    //SELECT TIMEDIFF('2012-06-07 15:20:18', '2012-06-06 13:13:55') as Horas;
+    //select timediff(endDate, beginDate); --^
+    //select date_format(curdate(), "%d/%c/%Y"); <-- Formats english date to MX date format
+    // let time = new Date();
+    // let date = new Date();
+    // console.log(
+    //     date.toLocaleDateString('es-MX'),
+    //     time.toLocaleString('es-MX', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false })
+    // );
+
     const [rows, setRows] = useState([])
     const [loadingData, setLoadingData] = useState(true);
-    // const [day, setDay] = useState([]);
-    // const [month, setMonth] = useState([]);
-    // const [year, setYear] = useState([]);
+    const [day, setDay] = useState([]);
+    const [month, setMonth] = useState([]);
+    const [year, setYear] = useState([]);
     let today = new Date();
-    let dayTitle = today.toLocaleString("es_MX", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-    let day = [];
-    let month = [];
-    let year = [];
-    //let dayTitle = `Reporte diario ${today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()}`;
-    let monthTitle = "";
-    let yearTitle = "";
+    let mm = today.getMonth() + 1;
+    let dd = today.getDate();
+    let yy = today.getFullYear();
+    let dayTitle = `Reporte diario ${dd+"-"+mm+"-"+yy}`;
+    let monthTitle = `Reporte mensual ${mm+"-"+yy}`;
+    let yearTitle = `Reporte anual ${yy}`;
 
     useEffect(() => {
         async function getData() {
             setRows(await dailyReports())
-            // setDay(await reports("day"))
-            // setMonth(await reports("month"))
-            // setYear(await reports("year"))
-            day = await reports("day")
-            month = await reports("month")
-            year = await reports("year")
+            setDay(await reports("day"))
+            setMonth(await reports("month"))
+            setYear(await reports("year"))
             console.log("Daytitle: ",dayTitle);
             setLoadingData(false)
         }
@@ -96,9 +99,22 @@ const Reportes = () => {
                             Generar reporte mensual
                         </ReportButton>
                     }
-                        filename="Exceltutorial">
+                        filename={monthTitle}>
                         <ExcelSheet data={month} name="datos">
-                            <ExcelColumn label="total" value="total" />
+                            <ExcelColumn label="Mayores de edad" value="mayores" />
+                            <ExcelColumn label="Menores de edad" value="menores" />
+                            <ExcelColumn label="Total" value="total" />
+                            <ExcelColumn label="Turno matutino" value="matutino" />
+                            <ExcelColumn label="Turno vespertino" value="vespertino" />
+                            <ExcelColumn label="Turno mixto" value="mixto" />
+                            <ExcelColumn label="Hombres" value="hombre" />
+                            <ExcelColumn label="Mujeres" value="mujer" />
+                            <ExcelColumn label="S.S.P." value="ssp" />
+                            <ExcelColumn label="S.S.C." value="ssc" />
+                            <ExcelColumn label="P.P." value="pp" />
+                            <ExcelColumn label="Servicio liberado" value="liberado" />
+                            <ExcelColumn label="Servicio incompleto" value="incompleto" />
+                            <ExcelColumn label="Servicio baja" value="baja" />
                         </ExcelSheet>
                     </ExcelFile>
                     <ExcelFile element={
@@ -106,9 +122,22 @@ const Reportes = () => {
                             Generar reporte anual
                         </ReportButton>
                     }
-                        filename="Exceltutorial">
+                        filename={yearTitle}>
                         <ExcelSheet data={year} name="datos">
-                            <ExcelColumn label="total" value="total" />
+                            <ExcelColumn label="Mayores de edad" value="mayores" />
+                            <ExcelColumn label="Menores de edad" value="menores" />
+                            <ExcelColumn label="Total" value="total" />
+                            <ExcelColumn label="Turno matutino" value="matutino" />
+                            <ExcelColumn label="Turno vespertino" value="vespertino" />
+                            <ExcelColumn label="Turno mixto" value="mixto" />
+                            <ExcelColumn label="Hombres" value="hombre" />
+                            <ExcelColumn label="Mujeres" value="mujer" />
+                            <ExcelColumn label="S.S.P." value="ssp" />
+                            <ExcelColumn label="S.S.C." value="ssc" />
+                            <ExcelColumn label="P.P." value="pp" />
+                            <ExcelColumn label="Servicio liberado" value="liberado" />
+                            <ExcelColumn label="Servicio incompleto" value="incompleto" />
+                            <ExcelColumn label="Servicio baja" value="baja" />
                         </ExcelSheet>
                     </ExcelFile>
                 </div>
