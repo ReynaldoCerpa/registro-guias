@@ -23,12 +23,16 @@ const Login = () => {
         if (username.length === 0 || password.length === 0) {
             setErrorMsg("Ambos campos son obligatorios")
             setError(true)
-        }
-        const response = await logIn(username, password)
-        if (response == null) console.log("No se pudo iniciar sesion")
-        else{
-            localStorage.setItem("token", response)
-            nav("/adminHome")
+        } else {
+            const response = await logIn(username, password)
+            if (!response[0]){
+                setError(true)
+                setErrorMsg(response[1])
+            }
+            else{
+                localStorage.setItem("token", response[1])
+                nav("/adminHome")
+            }
         }
     }
 

@@ -16,7 +16,7 @@ const Home = () => {
     const [alertMsg, setAlertMsg] = useState("")
     const [errorMsg, setErrorMsg] = useState("Datos incorrectos")
     const [id, setId] = useState("")
-    const [disabled, setDisabled]  = useState(false)
+    const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false);
     const nav = useNavigate();
 
@@ -37,14 +37,15 @@ const Home = () => {
                     setErrorMsg(msg[1])
                     setLoading(false)
                 } else {
-                   setAlert(true)
-                   setAlertMsg(msg[1])
-                   setLoading(false)
+                    setAlert(true)
+                    setAlertMsg(msg[1])
+                    setLoading(false)
                 }
                 console.log(msg);
             }
             setTimeout(() => {
                 setDisabled(false) //prevents user spamming ids
+                setId("")
             }, 1000);
             setTimeout(() => {
                 setAlert(false)
@@ -55,9 +56,9 @@ const Home = () => {
     return (
         <div>
             <Navbar Icon={FiLogIn} text={"INICIAR SESION"}
-            action={() => {
-                nav("/login")
-            }}
+                action={() => {
+                    nav("/login")
+                }}
             />
             <div className="enter-id-items">
                 <h1>Ingrese su ID</h1>
@@ -72,47 +73,47 @@ const Home = () => {
                             setId(e.target.value.toUpperCase())
                         }
                     }}
-                    onKeyDown={(e)=>{
+                    onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             handleSubmit(e.target.value)
                         }
                     }}
                 />
                 {loading && (
-                <CircularProgress
-                    size={24}
-                    sx={{
-                    position: 'absolute',
-                    marginTop: '6.35rem',
-                    }}
-                />
+                    <CircularProgress
+                        size={24}
+                        sx={{
+                            position: 'absolute',
+                            marginTop: '6.35rem',
+                        }}
+                    />
                 )}
                 <p className="lower-label">Presione Enter para registrar la hora de ingreso/salida</p>
                 {error ?
                     <Zoom in={error}>
-                    {
-                        <Alert 
-                        style={{margin: "1rem"}}
-                        severity="error">
-                        {errorMsg}
-                        </Alert>
-                    }
+                        {
+                            <Alert
+                                style={{ margin: "1rem" }}
+                                severity="error">
+                                {errorMsg}
+                            </Alert>
+                        }
                     </Zoom>
                     : ""
                 }
                 {alert ?
                     <Zoom in={alert}>
-                    {
-                        <Alert 
-                        style={{
-                            margin: "1rem",
-                            maxWidth: "15rem",
-                            overflowWrap: "break-word"
-                        }}
-                        severity="success">
-                        {alertMsg}
-                        </Alert>
-                    }
+                        {
+                            <Alert
+                                style={{
+                                    margin: "1rem",
+                                    maxWidth: "15rem",
+                                    overflowWrap: "break-word"
+                                }}
+                                severity="success">
+                                {alertMsg}
+                            </Alert>
+                        }
                     </Zoom>
                     : ""
                 }

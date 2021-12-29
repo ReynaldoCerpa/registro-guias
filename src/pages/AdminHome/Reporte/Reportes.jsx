@@ -121,7 +121,7 @@ const Reportes = () => {
                 </Tooltip>
             </div>
             <TableContainer component={Paper}
-            sx={{maxHeight: 500, overflowY: "scroll",backgroundColor: "#f5f5f5"}}
+            sx={{height: "55vh", overflowY: "scroll",backgroundColor: "#f5f5f5"}}
             >
             <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -132,9 +132,7 @@ const Reportes = () => {
                     <TableCell align="center">Hora de salida</TableCell>
                 </TableRow>
                 </TableHead>
-                <TableBody
-                
-                >
+                <TableBody>
                 {rows.map((row) => (
                     <TableRow
                     key={row.entrada}
