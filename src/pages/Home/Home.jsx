@@ -6,7 +6,7 @@ import { useState } from "react"
 import Navbar from "../../components/Navbar/Navbar"
 import CircularProgress from '@mui/material/CircularProgress';
 import { TextField } from "../../components/TextField"
-import { checkTime } from "./checkTime"
+import { checkTime } from "../../db-conn/guides/checkTime"
 
 const Home = () => {
 

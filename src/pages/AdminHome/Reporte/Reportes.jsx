@@ -9,7 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
-import { reports } from "./getDailyReports";
+import { dailyReports } from "../../../db-conn/guides/getDailyReports";
+import { reports } from "../../../db-conn/guides/generateReport";
 import Tooltip from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
 import { ReportButton } from "../../../components/Buttons";
@@ -23,6 +24,7 @@ const Reportes = () => {
     const [year, setYear] = useState(false);
     const [checked, setChecked] = useState(null);
     const [buttonTitle, setButtonTitle] = useState("")
+    const [reportData, setReportData] = useState(null)
 
     const handleDay = () => {
         setDay(!day);
@@ -48,10 +50,18 @@ const Reportes = () => {
         setButtonTitle("del Año")
     }
 
+    const handleGenerateReport = async () => {
+        if(checked){
+            setReportData(await reports(checked));
+            console.log(reportData);
+        } else {
+            console.log("seleccione duracion de reporte");
+        }
+    }
 
     useEffect(() => {
         async function getData() {
-            setRows(await reports())
+            setRows(await dailyReports())
             setLoadingData(false)
         }
         if(loadingData){
@@ -92,9 +102,7 @@ const Reportes = () => {
                     <h4>Año</h4>
                 </div>
                 <ReportButton
-                onClick={()=>{
-                    console.log(checked)
-                }}
+                onClick={handleGenerateReport}
                 >
                     Generar reporte {day || month || year ? buttonTitle : ""}
                 </ReportButton>
@@ -114,7 +122,7 @@ const Reportes = () => {
                         <FiRefreshCcw
                             onClick={async()=>{
                                 setRows([])
-                                setRows(await reports())
+                                setRows(await dailyReports())
                             }}
                         />
                     </div>
@@ -135,7 +143,7 @@ const Reportes = () => {
                 <TableBody>
                 {rows.map((row) => (
                     <TableRow
-                    key={row.entrada}
+                    key={row.idRegistro}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                     <TableCell component="th" scope="row">

@@ -18,7 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
-import { guias } from "./getAllGuias";
+import { guias } from "../../../db-conn/guides/getAllGuias";
 import { AddHorasButton } from "../../../components/Buttons";
 
 // This method is created for cross-browser compatibility, if you don't

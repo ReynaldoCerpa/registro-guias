@@ -1,4 +1,4 @@
-import { headers } from "../../../config/headers";
+import { headers } from "../../config/headers";
 
 export const guias = async () => {
       const response = await fetch(`${process.env.REACT_APP_URL}guides/`, {

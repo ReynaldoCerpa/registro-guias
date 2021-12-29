@@ -1,8 +1,8 @@
-import { headers } from "../../../config/headers";
+import { headers } from "../../config/headers";
 
-export const reports = async () => {
+export const dailyReports = async () => {
       const response = await fetch(`${process.env.REACT_APP_URL}reports/dailyReports`, {
-          method: "post",
+          method: "get",
           headers: headers,
         }
       );

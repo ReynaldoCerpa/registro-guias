@@ -5,7 +5,7 @@ import { Alert, Zoom } from "@mui/material"
 import "./RegisterGuia.css"
 import { useState, useEffect } from "react"
 import Select from "../../../components/Select"
-import { guias } from "../Guias/getAllGuias"
+import { guias } from "../../../db-conn/guides/getAllGuias"
 
 const RegisterGuia = () => {
 
