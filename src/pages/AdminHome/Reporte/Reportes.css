@@ -32,10 +32,5 @@
 .generar-reporte-controls-container{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-}
-
-.reportes-checkboxes{
-    display: flex;
-
+    margin: 0.5rem auto 0;
 }

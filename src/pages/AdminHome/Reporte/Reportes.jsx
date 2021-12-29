@@ -24,53 +24,32 @@ const Reportes = () => {
 
     const [rows, setRows] = useState([])
     const [loadingData, setLoadingData] = useState(true);
-    const [day, setDay] = useState(false);
-    const [month, setMonth] = useState(false);
-    const [year, setYear] = useState(false);
-    const [checked, setChecked] = useState(null);
-    const [buttonTitle, setButtonTitle] = useState("")
-    const [reportData, setReportData] = useState([])
-
-    const handleDay = () => {
-        setDay(!day);
-        setMonth(false);
-        setYear(false);
-        setButtonTitle("del Día")
-        !day ? setChecked("day") : setChecked(null);
-    }
-
-    const handleMonth = () => {
-        setDay(false);
-        setMonth(!month);
-        setYear(false);
-        setButtonTitle("del Mes")
-        !month ? setChecked("month") : setChecked(null);
-    }
-
-    const handleYear = () => {
-        setDay(false);
-        setMonth(false);
-        setYear(!year);
-        setButtonTitle("del Año")
-        !year ? setChecked("year") : setChecked(null);
-    }
-
-    const handleGenerateReport = async () => {
-        if (checked) {
-            let data = await reports(checked)
-            setReportData(data)
-            console.log("Data: ",data);
-        } else {
-            console.log("Seleccione duracion de reporte");
-        }
-    }
-
-    let dayData = []
+    // const [day, setDay] = useState([]);
+    // const [month, setMonth] = useState([]);
+    // const [year, setYear] = useState([]);
+    let today = new Date();
+    let dayTitle = today.toLocaleString("es_MX", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    let day = [];
+    let month = [];
+    let year = [];
+    //let dayTitle = `Reporte diario ${today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()}`;
+    let monthTitle = "";
+    let yearTitle = "";
 
     useEffect(() => {
-        console.log("updated state");
         async function getData() {
             setRows(await dailyReports())
+            // setDay(await reports("day"))
+            // setMonth(await reports("month"))
+            // setYear(await reports("year"))
+            day = await reports("day")
+            month = await reports("month")
+            year = await reports("year")
+            console.log("Daytitle: ",dayTitle);
             setLoadingData(false)
         }
         if (loadingData) {
@@ -89,41 +68,47 @@ const Reportes = () => {
                     Generar reporte estadístico
                 </Typography>
                 <div className="generar-reporte-controls-container">
-                    <div className="reportes-checkboxes">
-                        <Checkbox
-                            color="primary"
-                            checked={day}
-                            onClick={handleDay}
-                        />
-                        <h4>Día</h4>
-                        <Checkbox
-                            sx={{ margin: 0 }}
-                            color="primary"
-                            checked={month}
-                            onClick={handleMonth}
-                        />
-                        <h4>Mes</h4>
-                        <Checkbox
-                            color="primary"
-                            checked={year}
-                            onClick={handleYear}
-                        />
-                        <h4>Año</h4>
-                    </div>
                     <ExcelFile element={
-                        <ReportButton
-                            onClick={async () => {
-                                //await handleGenerateReport()
-                                dayData = await reports("day")
-                                console.log("Report data to excel: ",dayData);
-                            }}
-                        >
-                            Generar reporte {day || month || year ? buttonTitle : ""}
+                        <ReportButton>
+                            Generar reporte diario
                         </ReportButton>
                     }
-                    filename="Exceltutorial">
-                        <ExcelSheet data={dayData} name="datos">
-                            <ExcelColumn label="total" value="total"/>
+                        filename={dayTitle}>
+                        <ExcelSheet data={day} name="datos">
+                            <ExcelColumn label="Mayores de edad" value="mayores" />
+                            <ExcelColumn label="Menores de edad" value="menores" />
+                            <ExcelColumn label="Total" value="total" />
+                            <ExcelColumn label="Turno matutino" value="matutino" />
+                            <ExcelColumn label="Turno vespertino" value="vespertino" />
+                            <ExcelColumn label="Turno mixto" value="mixto" />
+                            <ExcelColumn label="Hombres" value="hombre" />
+                            <ExcelColumn label="Mujeres" value="mujer" />
+                            <ExcelColumn label="S.S.P." value="ssp" />
+                            <ExcelColumn label="S.S.C." value="ssc" />
+                            <ExcelColumn label="P.P." value="pp" />
+                            <ExcelColumn label="Servicio liberado" value="liberado" />
+                            <ExcelColumn label="Servicio incompleto" value="incompleto" />
+                            <ExcelColumn label="Servicio baja" value="baja" />
+                        </ExcelSheet>
+                    </ExcelFile>
+                    <ExcelFile element={
+                        <ReportButton>
+                            Generar reporte mensual
+                        </ReportButton>
+                    }
+                        filename="Exceltutorial">
+                        <ExcelSheet data={month} name="datos">
+                            <ExcelColumn label="total" value="total" />
+                        </ExcelSheet>
+                    </ExcelFile>
+                    <ExcelFile element={
+                        <ReportButton>
+                            Generar reporte anual
+                        </ReportButton>
+                    }
+                        filename="Exceltutorial">
+                        <ExcelSheet data={year} name="datos">
+                            <ExcelColumn label="total" value="total" />
                         </ExcelSheet>
                     </ExcelFile>
                 </div>

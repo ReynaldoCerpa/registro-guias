@@ -52,7 +52,7 @@ export const AddHorasButton = styled(StyledButton, {})({
 })
 
 export const ReportButton = styled(StyledButton, {})({
-    marginRight: "1rem",
+    
     padding: "0.5rem",
     lineHeight: "0.9rem",
     width: "9rem",
