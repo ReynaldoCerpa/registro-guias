@@ -11,6 +11,5 @@ export const reports = async (duration) => {
     }
   );
   const data = await response.json();
-  console.log("Data from reports: ",data);
-  return data[0];
+  return data[0][0];
 }
