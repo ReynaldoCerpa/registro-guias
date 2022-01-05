@@ -140,16 +140,6 @@ const EnhancedTableToolbar = (props) => {
           Guías
         </Typography>
       )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Eliminar">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        null
-      )}
     </Toolbar>
   );
 };
@@ -331,7 +321,7 @@ const Guias = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[3, 5, 10]}
+          rowsPerPageOptions={[5, 10]}
           component="div"
           count={rows.length}
           labelRowsPerPage={"Filas por página:"}
