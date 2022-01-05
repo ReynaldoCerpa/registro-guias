@@ -156,6 +156,7 @@ const Guias = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [hasValues, setHasValues] = useState(false);
+  const [selectedList, setSelectedList] = useState([])
   
   useEffect(() => {
     async function getData() {
@@ -171,7 +172,10 @@ const Guias = () => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.idGuia);
       setSelected(newSelecteds);
+      setSelectedList(rows.map(x => x["idGuia"]))
       return;
+    } else {
+      setSelectedList([])
     }
     setSelected([]);
   };
@@ -192,7 +196,6 @@ const Guias = () => {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -205,8 +208,17 @@ const Guias = () => {
     setPage(0);
   };
 
+  const handleSelectID = (id) => {
+    if (selectedList.indexOf(id) === -1) {
+      setSelectedList([...selectedList, id])
+    }else {
+      setSelectedList(selectedList.filter(item => item !== id))
+    }
+  }
+
   const handleAgregarHoras = () => {
     //Final ID system needed
+    console.log(selectedList);
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -285,8 +297,13 @@ const Guias = () => {
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
+                          id={row.idGuia}
                           inputProps={{
                             'aria-labelledby': labelId,
+                          }}
+                          onChange={(e)=>{
+                            console.log(e.target.id);
+                            handleSelectID(e.target.id)
                           }}
                         />
 
