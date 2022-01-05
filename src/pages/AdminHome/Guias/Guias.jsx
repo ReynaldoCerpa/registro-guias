@@ -172,7 +172,7 @@ const Guias = () => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.idGuia);
       setSelected(newSelecteds);
-      setSelectedList(rows.map(x => x["idGuia"]))
+      setSelectedList(rows.map(x => x["idGuia"])) //select all ids handler
       return;
     } else {
       setSelectedList([])
@@ -209,6 +209,7 @@ const Guias = () => {
   };
 
   const handleSelectID = (id) => {
+    //id selection handling for 'Prestador' checkbox is in handleSelectAllClick function
     if (selectedList.indexOf(id) === -1) {
       setSelectedList([...selectedList, id])
     }else {
