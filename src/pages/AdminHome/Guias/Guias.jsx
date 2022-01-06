@@ -140,16 +140,6 @@ const EnhancedTableToolbar = (props) => {
           Guías
         </Typography>
       )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Eliminar">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        null
-      )}
     </Toolbar>
   );
 };
@@ -166,6 +156,7 @@ const Guias = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [hasValues, setHasValues] = useState(false);
+  const [selectedList, setSelectedList] = useState([])
   
   useEffect(() => {
     async function getData() {
@@ -181,7 +172,10 @@ const Guias = () => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.idGuia);
       setSelected(newSelecteds);
+      setSelectedList(rows.map(x => x["idGuia"])) //select all ids handler
       return;
+    } else {
+      setSelectedList([])
     }
     setSelected([]);
   };
@@ -202,7 +196,6 @@ const Guias = () => {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -215,8 +208,18 @@ const Guias = () => {
     setPage(0);
   };
 
+  const handleSelectID = (id) => {
+    //id selection handling for 'Prestador' checkbox is in handleSelectAllClick function
+    if (selectedList.indexOf(id) === -1) {
+      setSelectedList([...selectedList, id])
+    }else {
+      setSelectedList(selectedList.filter(item => item !== id))
+    }
+  }
+
   const handleAgregarHoras = () => {
     //Final ID system needed
+    console.log(selectedList);
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -295,8 +298,13 @@ const Guias = () => {
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
+                          id={row.idGuia}
                           inputProps={{
                             'aria-labelledby': labelId,
+                          }}
+                          onChange={(e)=>{
+                            console.log(e.target.id);
+                            handleSelectID(e.target.id)
                           }}
                         />
 
@@ -331,7 +339,7 @@ const Guias = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[3, 5, 10]}
+          rowsPerPageOptions={[5, 10]}
           component="div"
           count={rows.length}
           labelRowsPerPage={"Filas por página:"}

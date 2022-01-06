@@ -1,12 +1,17 @@
 import { RegisterTextField } from "../../../components/TextField"
 import { RegisterGuiaButton } from "../../../components/Buttons"
 import { MenuItem } from "@mui/material"
-import { Alert, Zoom } from "@mui/material"
+import { Alert, Zoom, TextField } from "@mui/material"
 import "./RegisterGuia.css"
 import { useState, useEffect } from "react"
 import Select from "../../../components/Select"
 import { guias } from "../../../db-conn/guides/getAllGuias"
-import { registerNewGuide } from "../../../db-conn/guides/registerGuide"
+import { formatDate } from "../../../utils/formatDate"
+import DatePicker from "@mui/lab/DatePicker"
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import es from "date-fns/locale/es/index.js"
+import { registerGuide } from "../../../db-conn/guides/registerGuide"
 
 const RegisterGuia = () => {
 
@@ -22,6 +27,7 @@ const RegisterGuia = () => {
     const [genero, setGenero] = useState("");
     const [data, setData] = useState([])
     const [generatedID, setGeneratedID] = useState("")
+    const [date, setDate] = useState(null);
     const regex = /^\d*\.?\d*$/;
 
     const handlePrestacion = (e) => setPrestacion(e.target.value);
@@ -44,19 +50,44 @@ const RegisterGuia = () => {
     }
 
     const handleRegistrar = async () => {
-        if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "" || horasRealizadas === "" || horasRealizadas === "." ) {
+        if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "" || horasRealizadas === "" || horasRealizadas === "." || formatDate(date) == "invalid") {
             setError(true)
+            setDate("00/00/0000")
         } else {
             if (horasRealizadas.indexOf(".") === horasRealizadas.length-1) {
                 setHorasRealizadas(horasRealizadas.slice(0, -1))
             }
             setError(false)
-            let id = generateId(primerNombre,apellidoPaterno,apellidoMaterno)
+            console.log(date.toString().split(" "));
+            console.log(formatDate(date));
+            console.log(generateId(primerNombre,apellidoPaterno,apellidoMaterno));
 
-            const result = await registerNewGuide(id, primerNombre, segundoNombre, apellidoPaterno, apellidoMaterno, prestacion, "2006-09-09", turno, servicio, horasRealizadas, genero)
-            console.log(result);
+            let data = {
+                idGuia: generateId(primerNombre,apellidoPaterno,apellidoMaterno),
+                nombre1: primerNombre,
+                nombre2: segundoNombre,
+                apellidoPaterno: apellidoPaterno,
+                apellidoMaterno: apellidoMaterno,
+                prestacion: prestacion,
+                fechaNacimiento: formatDate(date),
+                turno: turno,
+                servicio: servicio,
+                horasRealizadas: horasRealizadas,
+                genero: genero,
+            }
+
+            const res = await registerGuide(data)
+            console.log(res);
         }
     }
+
+    const localeMap = {
+        es: es,
+      };
+      
+    const maskMap = {
+    es: '__/__/____',
+    };
 
     return (
         <div className="register-container">
@@ -77,6 +108,8 @@ const RegisterGuia = () => {
                             onInput={(e)=>setSegundoNombre(e.target.value)}
                             label="Segundo nombre (Opcional)"
                         />
+                    </div>
+                    <div className="textInput-items">
                         <RegisterTextField
                             error={error}
                             autoComplete="off"
@@ -91,6 +124,19 @@ const RegisterGuia = () => {
                             onInput={(e)=>setApellidoMaterno(e.target.value)}
                             label="Apellido materno"
                         />
+                    </div>
+                    <div className="textInput-items">
+                        <LocalizationProvider dateAdapter={AdapterDateFns} locale={localeMap["es"]}>
+                            <DatePicker
+                                label="Fecha de nacimiento"
+                                mask={maskMap["es"]}
+                                value={date}
+                                onChange={(e) => {
+                                setDate(e);
+                                }}
+                                renderInput={(params) => <RegisterTextField {...params} />}
+                            />
+                        </LocalizationProvider>
                         <RegisterTextField
                             error={error}
                             autoComplete="off"

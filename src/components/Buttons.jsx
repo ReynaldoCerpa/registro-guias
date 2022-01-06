@@ -55,7 +55,7 @@ export const ReportButton = styled(StyledButton, {})({
     
     padding: "0.5rem",
     lineHeight: "0.9rem",
-    width: "9rem",
+    width: "10.5rem",
     display: "flex",
     fontSize: "0.8rem",
     backgroundColor: "#08406e",
