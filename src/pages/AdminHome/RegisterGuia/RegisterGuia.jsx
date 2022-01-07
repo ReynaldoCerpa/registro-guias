@@ -12,10 +12,14 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import es from "date-fns/locale/es/index.js"
 import { registerGuide } from "../../../db-conn/guides/registerGuide"
+import CircularProgress from '@mui/material/CircularProgress';
 
 const RegisterGuia = () => {
 
+    const [alert, setAlert] = useState(false)
+    const [alertMsg, setAlertMsg] = useState("")
     const [error, setError] = useState(false)
+    const [errorMsg, setErrorMsg] = useState("Datos incorrectos")
     const [primerNombre, setPrimerNombre] = useState("");
     const [segundoNombre, setSegundoNombre] = useState("");
     const [apellidoPaterno, setApellidoPaterno] = useState("");
@@ -28,6 +32,7 @@ const RegisterGuia = () => {
     const [data, setData] = useState([])
     const [generatedID, setGeneratedID] = useState("")
     const [date, setDate] = useState(null);
+    const [loading, setLoading] = useState(false)
     const regex = /^\d*\.?\d*$/;
 
     const handlePrestacion = (e) => setPrestacion(e.target.value);
@@ -43,24 +48,28 @@ const RegisterGuia = () => {
       }, [])
 
     const generateId = (a,b,c) => {
-        const id = data[data.length-1].idGuia;
-        const number = parseInt(id.substring(3)); 
-        const finalID = a.charAt(0).toUpperCase()+b.charAt(0).toUpperCase()+c.charAt(0).toUpperCase()+number;
+        let finalID;
+        if (data.length !== 0) {
+            const id = data[0].idGuia;
+            const number = parseInt(id.substring(3)); 
+            finalID = a.charAt(0).toUpperCase()+b.charAt(0).toUpperCase()+c.charAt(0).toUpperCase()+(number+1);
+        } else {
+            finalID = a.charAt(0).toUpperCase()+b.charAt(0).toUpperCase()+c.charAt(0).toUpperCase()+1;
+        }
         return finalID
     }
 
     const handleRegistrar = async () => {
+        setAlert(false)
         if (primerNombre === "" || apellidoPaterno === "" || apellidoMaterno === "" || prestacion === "" || turno === "" || servicio === "" || genero === "" || horasRealizadas === "" || horasRealizadas === "." || formatDate(date) == "invalid") {
             setError(true)
             setDate("00/00/0000")
+            setErrorMsg("Rellene los campos obligatorios")
         } else {
             if (horasRealizadas.indexOf(".") === horasRealizadas.length-1) {
                 setHorasRealizadas(horasRealizadas.slice(0, -1))
             }
             setError(false)
-            console.log(date.toString().split(" "));
-            console.log(formatDate(date));
-            console.log(generateId(primerNombre,apellidoPaterno,apellidoMaterno));
 
             let data = {
                 idGuia: generateId(primerNombre,apellidoPaterno,apellidoMaterno),
@@ -75,18 +84,28 @@ const RegisterGuia = () => {
                 horasRealizadas: horasRealizadas,
                 genero: genero,
             }
-
+            setLoading(true)
             const res = await registerGuide(data)
+            if (res[0]) {
+                setAlert(true)
+                setAlertMsg("Guía registrado con éxito")
+                setLoading(false)
+                setData(await guias())
+            } else {
+                setError(true)
+                setErrorMsg(res[1])
+                setLoading(false)
+            }
             console.log(res);
         }
     }
 
     const localeMap = {
         es: es,
-      };
+    };
       
     const maskMap = {
-    es: '__/__/____',
+        es: '__/__/____',
     };
 
     return (
@@ -171,6 +190,7 @@ const RegisterGuia = () => {
                             items={[
                                 <MenuItem key={"Matutino"} value={"Matutino"}>Matutino</MenuItem>,
                                 <MenuItem key={"Vespertino"} value={"Vespertino"}>Vespertino</MenuItem>,
+                                <MenuItem key={"Mixto"} value={"Mixto"}>Mixto</MenuItem>,
                             ]}
                         />
                     </div>
@@ -182,9 +202,9 @@ const RegisterGuia = () => {
                             value={servicio}
                             handler={handleServicio}
                             items={[
+                                <MenuItem key={"Alta"} value={"Alta"}>Alta</MenuItem>,
                                 <MenuItem key={"Liberado"} value={"Liberado"}>Liberado</MenuItem>,
-                                <MenuItem key={"Baja"} value={"Baja"}>Baja</MenuItem>,
-                                <MenuItem key={"Alta"} value={"Alta"}>Alta</MenuItem>
+                                <MenuItem key={"Baja"} value={"Baja"}>Baja</MenuItem>
                             ]}
                         />
                         <Select
@@ -202,21 +222,50 @@ const RegisterGuia = () => {
                 </form>
                 {error ?
                     <Zoom in={error}>
-                    {
-                        <Alert severity="error">
-                            Rellene los campos obligatorios
-                        </Alert>
-                    }
+                        {
+                            <Alert
+                                style={{ margin: "1rem" }}
+                                severity="error">
+                                {errorMsg}
+                            </Alert>
+                        }
+                    </Zoom>
+                    : ""
+                }
+                {alert ?
+                    <Zoom in={alert}>
+                        {
+                            <Alert
+                                style={{
+                                    margin: "1rem",
+                                    maxWidth: "15rem",
+                                    overflowWrap: "break-word"
+                                }}
+                                severity="success">
+                                {alertMsg}
+                            </Alert>
+                        }
                     </Zoom>
                     : ""
                 }
                 <RegisterGuiaButton
+                    disabled={loading}
                     onClick={()=>{
                         handleRegistrar()
                     }}
                 >
                     Registrar
                 </RegisterGuiaButton>
+                {loading && (
+                    <CircularProgress
+                        size={24}
+                        sx={{
+                            position: 'absolute',
+                            marginTop: '27.3rem',
+                            color: "white"
+                        }}
+                    />
+                )}
             </div>
         </div>
     )
