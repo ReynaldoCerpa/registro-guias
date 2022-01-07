@@ -21,6 +21,7 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
 import { guias } from "../../../db-conn/guides/getAllGuias";
 import { AddHorasButton } from "../../../components/Buttons";
+import { updateHours } from "../../../db-conn/guides/updateHours";
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
@@ -158,6 +159,7 @@ const Guias = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [hasValues, setHasValues] = useState(false);
   const [selectedList, setSelectedList] = useState([])
+  const [hours, setHours] = useState("")
   
   useEffect(() => {
     async function getData() {
@@ -244,11 +246,16 @@ const Guias = () => {
     }else {
       setSelectedList(selectedList.filter(item => item !== id))
     }
-  }
+  };
 
-  const handleAgregarHoras = () => {
-    //Final ID system needed
-    console.log(selectedList);
+  const handleAgregarHoras = async () => {
+    if (hours !== 0 && hours !== "" && selectedList.length > 0) {
+      await updateHours([hours, selectedList])
+      console.log(selectedList);
+      setRows(await guias())
+    } else {
+      console.log("Ingrese horas y seleccione prestador(es)");
+    }
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -261,8 +268,8 @@ const Guias = () => {
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
-      maxWidth: 300,
-      fontSize: theme.typography.pxToRem(15),
+      maxWidth: 265,
+      fontSize: theme.typography.pxToRem(13),
     },
   }));
 
@@ -289,18 +296,19 @@ const Guias = () => {
                 </Tooltip>
             </div>
             <div className="agregar-horas-items">
-              <HorasTooltip 
-              title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
                 <input
                   type="number" 
                   placeholder="Ingrese horas"
+                  onInput={(e)=>{setHours(e.target.value)}}
                 />
-              </HorasTooltip>
+              <HorasTooltip 
+              title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
               <AddHorasButton
               onClick={handleAgregarHoras}
               >
                 Agregar horas
               </AddHorasButton>
+                </HorasTooltip>
             </div>
         </div>
         <TableContainer>
