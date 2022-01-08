@@ -47,3 +47,33 @@
     cursor: pointer;
     margin-left: 1rem;
 }
+
+.agregar-horas-items{
+    width: 20rem;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-left: 1rem;
+}
+
+.agregar-horas-items input{
+    border: none;
+    background-color: #e4e4e4;
+    height: 0.7rem;
+    max-width: 15rem;
+    margin-right: 0.5rem;
+    width: 7rem;
+    padding: 9px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.agregar-horas-items input:focus{
+    outline: none;
+    background-color: #ededed;
+}
+
+.agregar-horas-items input:hover{
+    outline: none;
+    background-color: #ededed;
+}

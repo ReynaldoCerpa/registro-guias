@@ -14,12 +14,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
+import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
 import { guias } from "../../../db-conn/guides/getAllGuias";
 import { AddHorasButton } from "../../../components/Buttons";
+import { updateHours } from "../../../db-conn/guides/updateHours";
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
@@ -157,6 +159,7 @@ const Guias = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [hasValues, setHasValues] = useState(false);
   const [selectedList, setSelectedList] = useState([])
+  const [hours, setHours] = useState("")
   
   useEffect(() => {
     async function getData() {
@@ -170,9 +173,37 @@ const Guias = () => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.idGuia);
+      const newSelecteds = rows.filter((val)=>{
+        if (searchTerm == "") {
+            return val
+        } else if(
+            val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.genero.toLowerCase().includes(searchTerm.toLowerCase())
+        ){
+            return val
+        }
+    }).map((n) => n.idGuia);
       setSelected(newSelecteds);
-      setSelectedList(rows.map(x => x["idGuia"])) //select all ids handler
+      setSelectedList(rows.filter((val)=>{
+        if (searchTerm == "") {
+            return val
+        } else if(
+            val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+            val.genero.toLowerCase().includes(searchTerm.toLowerCase())
+        ){
+            return val
+        }
+    }).map(x => x["idGuia"])) //select all ids handler
       return;
     } else {
       setSelectedList([])
@@ -215,11 +246,16 @@ const Guias = () => {
     }else {
       setSelectedList(selectedList.filter(item => item !== id))
     }
-  }
+  };
 
-  const handleAgregarHoras = () => {
-    //Final ID system needed
-    console.log(selectedList);
+  const handleAgregarHoras = async () => {
+    if (hours !== 0 && hours !== "" && selectedList.length > 0) {
+      await updateHours([hours, selectedList])
+      console.log(selectedList);
+      setRows(await guias())
+    } else {
+      console.log("Ingrese horas y seleccione prestador(es)");
+    }
   }
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -227,6 +263,15 @@ const Guias = () => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
+  const HorasTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: 265,
+      fontSize: theme.typography.pxToRem(13),
+    },
+  }));
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -250,9 +295,21 @@ const Guias = () => {
                     </div>
                 </Tooltip>
             </div>
-            <AddHorasButton
-            onClick={handleAgregarHoras}
-            >Agregar horas</AddHorasButton>
+            <div className="agregar-horas-items">
+                <input
+                  type="number" 
+                  placeholder="Ingrese horas"
+                  onInput={(e)=>{setHours(e.target.value)}}
+                />
+              <HorasTooltip 
+              title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
+              <AddHorasButton
+              onClick={handleAgregarHoras}
+              >
+                Agregar horas
+              </AddHorasButton>
+                </HorasTooltip>
+            </div>
         </div>
         <TableContainer>
           <Table
