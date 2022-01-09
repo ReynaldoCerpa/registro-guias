@@ -257,7 +257,6 @@ const Guias = () => {
   const handleAgregarHoras = async () => {
     if (hours !== 0 && hours !== "" && selectedList.length > 0) {
       await updateHours([hours, selectedList])
-      console.log(selectedList);
       setRows(await guias())
     } else {
       console.log("Ingrese horas y seleccione prestador(es)");
