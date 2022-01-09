@@ -21,7 +21,6 @@ const Home = () => {
     const nav = useNavigate();
 
     const handleSubmit = async (id) => {
-        console.log(process.env.REACT_APP_URL);
         setError(false)
         setAlert(false)
         setLoading(true)
