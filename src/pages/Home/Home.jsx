@@ -44,7 +44,7 @@ const Home = () => {
                 console.log(msg);
             }
             setTimeout(() => {
-                setDisabled(false) //prevents user spamming ids
+                setDisabled(false) //prevents user spamming ids with timer
                 setId("")
             }, 1000);
             setTimeout(() => {
