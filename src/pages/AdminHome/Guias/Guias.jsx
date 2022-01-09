@@ -22,7 +22,12 @@ import { FiRefreshCcw } from "react-icons/fi"
 import { guias } from "../../../db-conn/guides/getAllGuias";
 import { AddHorasButton } from "../../../components/Buttons";
 import { updateHours } from "../../../db-conn/guides/updateHours";
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
 
@@ -158,8 +163,9 @@ const Guias = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [hasValues, setHasValues] = useState(false);
-  const [selectedList, setSelectedList] = useState([])
-  const [hours, setHours] = useState("")
+  const [selectedList, setSelectedList] = useState([]);
+  const [hours, setHours] = useState("");
+  const [dialog, setDialog] = useState(false);
   
   useEffect(() => {
     async function getData() {
@@ -299,16 +305,50 @@ const Guias = () => {
                 <input
                   type="number" 
                   placeholder="Ingrese horas"
+                  value={hours}
                   onInput={(e)=>{setHours(e.target.value)}}
                 />
               <HorasTooltip 
               title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
               <AddHorasButton
-              onClick={handleAgregarHoras}
+                onClick={()=>{setDialog(true)}}
               >
                 Agregar horas
               </AddHorasButton>
-                </HorasTooltip>
+              </HorasTooltip>
+              <Dialog
+                open={dialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {`Agregar ${hours} hora(s) a:`}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    <ul>
+                      {selectedList.map(x => {
+                        return <li><b>{`${x}`}</b></li>
+                        })}
+                    </ul>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={()=>{
+                    setDialog(false)
+                    setSelected([])
+                    setHours("")
+                    }}>Cancelar</Button>
+                  <Button onClick={()=>{
+                      handleAgregarHoras()
+                      setDialog(false)
+                      setSelected([])
+                      setHours("")
+                    }} autoFocus>
+                    Aceptar
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
         </div>
         <TableContainer>
