@@ -166,50 +166,51 @@ const Guias = () => {
   const [selectedList, setSelectedList] = useState([]);
   const [hours, setHours] = useState("");
   const [dialog, setDialog] = useState(false);
-  
+  const [alert, setAlert] = useState(false);
+
   useEffect(() => {
     async function getData() {
-        setRows(await guias())
-        setLoadingData(false)
+      setRows(await guias())
+      setLoadingData(false)
     }
-    if(loadingData){
-        getData();
+    if (loadingData) {
+      getData();
     }
   }, [])
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.filter((val)=>{
+      const newSelecteds = rows.filter((val) => {
         if (searchTerm == "") {
-            return val
-        } else if(
-            val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.genero.toLowerCase().includes(searchTerm.toLowerCase())
-        ){
-            return val
+          return val
+        } else if (
+          val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.genero.toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return val
         }
-    }).map((n) => n.idGuia);
+      }).map((n) => n.idGuia);
       setSelected(newSelecteds);
-      setSelectedList(rows.filter((val)=>{
+      setSelectedList(rows.filter((val) => {
         if (searchTerm == "") {
-            return val
-        } else if(
-            val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-            val.genero.toLowerCase().includes(searchTerm.toLowerCase())
-        ){
-            return val
+          return val
+        } else if (
+          val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+          val.genero.toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return val
         }
-    }).map(x => x["idGuia"])) //select all ids handler
+      }).map(x => x["idGuia"])) //select all ids handler
       return;
     } else {
       setSelectedList([])
@@ -217,7 +218,7 @@ const Guias = () => {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
+  const handleClick = (event, name, id) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
@@ -233,6 +234,7 @@ const Guias = () => {
         selected.slice(selectedIndex + 1),
       );
     }
+    handleSelectID(id)
     setSelected(newSelected);
   };
 
@@ -248,16 +250,24 @@ const Guias = () => {
   const handleSelectID = (id) => {
     //id selection handling for 'Prestador' checkbox is in handleSelectAllClick function
     if (selectedList.indexOf(id) === -1) {
+      
       setSelectedList([...selectedList, id])
     }else {
       setSelectedList(selectedList.filter(item => item !== id))
+
     }
+    // if (selectedList.indexOf(id) === -1) {
+    // } else {
+    // }
   };
 
   const handleAgregarHoras = async () => {
-    if (hours !== 0 && hours !== "" && selectedList.length > 0) {
+    if ((hours !== 0 && hours !== "") && selectedList.length !== 0) {
       await updateHours([hours, selectedList])
       setRows(await guias())
+      setSelectedList(selectedList.filter(item => item === ""))
+      setSelected([])
+      setHours("")
     } else {
       console.log("Ingrese horas y seleccione prestador(es)");
     }
@@ -283,72 +293,78 @@ const Guias = () => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className="toolbar-tools-container">
-            <div className="searchInput-guias-items">
-                <h5>Buscar:</h5>
-                <input 
-                type="text"
-                placeholder="Ingrese dato del guía"
-                onInput={(e)=>{setSearchTerm(e.target.value)}}
+          <div className="searchInput-guias-items">
+            <h5>Buscar:</h5>
+            <input
+              type="text"
+              placeholder="Ingrese dato del guía"
+              onInput={(e) => { setSearchTerm(e.target.value) }}
+            />
+            <Tooltip title="Refrescar tabla" placement="right" arrow>
+              <div className="refresh-table-button">
+                <FiRefreshCcw
+                  onClick={async () => {
+                    setRows(await guias())
+                  }}
                 />
-                <Tooltip title="Refrescar tabla" placement="right" arrow>
-                    <div className="refresh-table-button">
-                        <FiRefreshCcw
-                        onClick={async()=>{
-                            setRows(await guias())
-                        }}
-                        />
-                    </div>
-                </Tooltip>
-            </div>
-            <div className="agregar-horas-items">
-                <input
-                  type="number" 
-                  placeholder="Ingrese horas"
-                  value={hours}
-                  onInput={(e)=>{setHours(e.target.value)}}
-                />
-              <HorasTooltip 
+              </div>
+            </Tooltip>
+          </div>
+          <div className="agregar-horas-items">
+            <input
+              type="number"
+              placeholder="Ingrese horas"
+              value={hours}
+              onInput={(e) => { setHours(e.target.value) }}
+            />
+            <HorasTooltip
               title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
               <AddHorasButton
-                onClick={()=>{setDialog(true)}}
+                onClick={() => {
+                  if ((hours !== 0 && hours !== "") && selectedList.length !== 0) {
+                    setDialog(true)
+                  }
+                }}
               >
                 Agregar horas
               </AddHorasButton>
-              </HorasTooltip>
-              <Dialog
-                open={dialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {`Agregar ${hours} hora(s) a:`}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    <ul>
-                      {selectedList.map(x => {
-                        return <li><b>{`${x}`}</b></li>
-                        })}
-                    </ul>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={()=>{
-                    setDialog(false)
-                    setSelected([])
-                    setHours("")
-                    }}>Cancelar</Button>
-                  <Button onClick={()=>{
-                      handleAgregarHoras()
-                      setDialog(false)
-                      setSelected([])
-                      setHours("")
-                    }} autoFocus>
-                    Aceptar
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
+            </HorasTooltip>
+            <Dialog
+              open={dialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {`Agregar ${hours} hora(s) a:`}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  <ul>
+                    {selectedList.map(x => {
+                      return <li><b>{`${x}`}</b></li>
+                    })}
+                  </ul>
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => {
+                  setDialog(false)
+                  setSelectedList(selectedList.filter(item => item === ""))
+                  setSelected([])
+                  setHours("")
+                }}>Cancelar</Button>
+                <Button onClick={() => {
+                  handleAgregarHoras()
+                  setSelectedList(selectedList.filter(item => item === ""))
+                  setSelected([])
+                  setDialog(false)
+                  setHours("")
+                }} autoFocus>
+                  Aceptar
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
         <TableContainer>
           <Table
@@ -362,20 +378,20 @@ const Guias = () => {
               rowCount={rows.length}
             />
             <TableBody>
-              {rows.filter((val)=>{
-                  if (searchTerm == "") {
-                      return val
-                  } else if(
-                      val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      val.genero.toLowerCase().includes(searchTerm.toLowerCase())
-                  ){
-                      return val
-                  }
+              {rows.filter((val) => {
+                if (searchTerm == "") {
+                  return val
+                } else if (
+                  val.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  val.idGuia.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  val.fechaNacimiento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  val.turno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  val.servicio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  val.horasRealizadas.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  val.genero.toLowerCase().includes(searchTerm.toLowerCase())
+                ) {
+                  return val
+                }
               }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.idGuia);
@@ -384,10 +400,11 @@ const Guias = () => {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.idGuia)}
+                      //onClick={(event) => handleClick(event, row.idGuia)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       key={row.idGuia}
+                      id={row.idGuia}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -398,9 +415,9 @@ const Guias = () => {
                           inputProps={{
                             'aria-labelledby': labelId,
                           }}
-                          onChange={(e)=>{
-                            console.log(e.target.id);
-                            handleSelectID(e.target.id)
+                          onChange={(e) => {
+                            handleClick(e, row.idGuia, e.target.id)
+                            //handleSelectID(e, e.target.id)
                           }}
                         />
 
