@@ -4,7 +4,6 @@ import axios from "axios"
 export const checkTime = async (id) => {
 
   const ip = await axios.get('https://geolocation-db.com/json/')
-console.log(ip.data.IPv4);
     const values = {
         idGuia: id,
         ip: ip.data.IPv4
