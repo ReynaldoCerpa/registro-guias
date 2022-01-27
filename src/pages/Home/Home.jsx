@@ -41,7 +41,6 @@ const Home = () => {
                     setAlertMsg(msg[1])
                     setLoading(false)
                 }
-                console.log(msg);
             }
             setTimeout(() => {
                 setDisabled(false) //prevents user spamming ids with timer

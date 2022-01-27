@@ -96,7 +96,6 @@ const RegisterGuia = () => {
                 setErrorMsg(res[1])
                 setLoading(false)
             }
-            console.log(res);
         }
     }
 

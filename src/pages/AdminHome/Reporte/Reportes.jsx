@@ -52,7 +52,6 @@ const Reportes = () => {
             setDay(await reports("day"))
             setMonth(await reports("month"))
             setYear(await reports("year"))
-            console.log("Daytitle: ",dayTitle);
             setLoadingData(false)
         }
         if (loadingData) {
