@@ -13,7 +13,6 @@ const placeholder = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          height: "100%"
         }}
       >
         <Container>
