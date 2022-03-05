@@ -8,7 +8,7 @@ const Navbar = ({Icon, text, action, variant, isAdminPage}) => {
         <div className="navbar-container">
             <div className="navbar-items">
                 <img src="/assets/logo-blanco.png" alt="Logo caracol" height={50}/>
-                {isAdminPage ?
+{/*                 {isAdminPage ?
                     <Tooltip title="Cerrar sesión" placement="left" arrow>
                         <SignOutButton
                         onClick={()=>{
@@ -27,7 +27,7 @@ const Navbar = ({Icon, text, action, variant, isAdminPage}) => {
                     >
                     { Icon ? <Icon style={{marginRight: 10}} /> : null}
                     {text}</NavButton>
-                }
+                } */}
             </div>
         </div>
     )

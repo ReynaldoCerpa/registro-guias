@@ -1,0 +1,18 @@
+html, body {
+    height: 100%;
+}
+
+.typo {
+    font-family: 'Montserrat', 'sans serif';
+    font-weight: 800;
+    font-size: 5rem;
+}
+
+.subtitle { 
+    
+    color: "white";
+}
+
+.brake {
+    word-break: break-all;
+}
