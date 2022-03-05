@@ -1,2 +1,2 @@
 ## Placeholder for registro guias app
-# site under mantainance
+# site under mantainance until further notice
