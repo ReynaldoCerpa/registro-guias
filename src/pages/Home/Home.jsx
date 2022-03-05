@@ -9,7 +9,7 @@ import { TextField } from "../../components/TextField"
 import { checkTime } from "../../db-conn/guides/checkTime"
 
 const Home = () => {
-
+    
     const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     const [error, setError] = useState(false)
     const [alert, setAlert] = useState(false)

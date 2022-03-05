@@ -3,6 +3,7 @@ import "./Placeholder.css"
 import { Container, Image, Text } from '@mantine/core';
 
 const placeholder = () => {
+  //Placeholder page
   return (
     <>
       <Navbar />
