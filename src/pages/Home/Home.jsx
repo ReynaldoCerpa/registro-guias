@@ -10,6 +10,7 @@ import { checkTime } from "../../db-conn/guides/checkTime"
 
 const Home = () => {
 
+    //Home page
     const regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     const [error, setError] = useState(false)
     const [alert, setAlert] = useState(false)
