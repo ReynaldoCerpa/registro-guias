@@ -4,6 +4,7 @@ import { Container, Image, Text } from '@mantine/core';
 
 const placeholder = () => {
   //Placeholder page
+  //everything up to date??
   return (
     <>
       <Navbar />
