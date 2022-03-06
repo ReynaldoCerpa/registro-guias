@@ -15,7 +15,9 @@ const placeholder = () => {
           justifyContent: "center",
         }}
       >
-        <Container>
+        <Container
+          m="3rem 0 0 0"
+        >
           <Text
             className="typo"
             color="#051367"
@@ -24,7 +26,7 @@ const placeholder = () => {
           </Text>
           <Text
             className="typo brake"
-            
+            line
             variant="gradient"
             gradient={{
               from: 'blue', to: 'cyan', deg: 45
@@ -35,6 +37,7 @@ const placeholder = () => {
         </Container>
         <Container
           size={400}
+          m="3rem auto"
         >
           <Image src="/assets/site.png" />
         </Container>

@@ -6,10 +6,10 @@ html, body {
     font-family: 'Montserrat', 'sans serif';
     font-weight: 800;
     font-size: 5rem;
+    line-height: 5rem;
 }
 
 .subtitle { 
-    
     color: "white";
 }
 
