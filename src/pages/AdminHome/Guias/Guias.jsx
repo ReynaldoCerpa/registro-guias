@@ -30,6 +30,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import ModalAlert from "../../../components/ModalAlert"
 import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
+import { deleteGuides } from "../../../db-conn/guides/deleteGuides";
+import ConfirmationDialog from "../../../components/ConfirmationDialog";
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
 
@@ -168,6 +170,7 @@ const Guias = () => {
   const [selectedList, setSelectedList] = useState([]);
   const [hours, setHours] = useState("");
   const [dialog, setDialog] = useState(false);
+  const [confirmationDialog, setConfirmationDialog] = useState(false);
   const [alert, setAlert] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -264,6 +267,19 @@ const Guias = () => {
     // }
   };
 
+  const handleDeleteGuides = async () => {
+    if (selectedList.length !== 0) {
+      await deleteGuides(selectedList)
+      setRows(await guias())
+      setSelectedList(selectedList.filter(item => item === ""))
+      setSelected([])
+      setHours("")
+    } else {
+      console.log("Seleccione prestador(es)");
+    }
+  }
+
+
   const handleAgregarHoras = async () => {
     if ((hours !== 0 && hours !== "") && selectedList.length !== 0) {
       await updateHours([hours, selectedList])
@@ -319,6 +335,16 @@ const Guias = () => {
             </EditarStatusButton>
             <TrashIcon
               cursor={"pointer"}
+              onClick={()=>{
+                setConfirmationDialog(true);
+              }}
+            />
+            <ConfirmationDialog
+              open={confirmationDialog}
+              guides={selectedList}
+              setDialog={()=>setConfirmationDialog(false)}
+              setSelectedList={()=>setSelectedList(selectedList.filter(item => item === ""))}
+              setSelected={()=>setSelected([])}
             />
             <input
               type="number"
