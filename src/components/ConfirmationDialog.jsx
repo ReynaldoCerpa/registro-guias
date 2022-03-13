@@ -36,6 +36,7 @@ const ConfirmationDialog = ({open, guides, setDialog, setSelectedList, setSelect
                 }}>Cancelar</Button>
                 <Button onClick={() => {
 /*                   handleAgregarHoras() */
+                    handleDeleteGuides()
                     setDialog()
                     setSelectedList()
                     setSelected()

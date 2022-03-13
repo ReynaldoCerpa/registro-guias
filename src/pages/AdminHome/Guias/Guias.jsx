@@ -345,6 +345,7 @@ const Guias = () => {
               setDialog={()=>setConfirmationDialog(false)}
               setSelectedList={()=>setSelectedList(selectedList.filter(item => item === ""))}
               setSelected={()=>setSelected([])}
+              handleDeleteGuides={()=>handleDeleteGuides(selectedList)}
             />
             <input
               type="number"
