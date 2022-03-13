@@ -1,6 +1,7 @@
 import { styled } from "@mui/system"
 import { Button as StyledButton } from "@mui/material"
 import { FiLogOut } from "react-icons/fi"
+import { FaTrashAlt } from "react-icons/fa";
 
 export const NavButton = styled(StyledButton, {})({
     height: "2.5rem",
@@ -43,9 +44,28 @@ export const RegisterGuiaButton = styled(StyledButton, {})({
 export const AddHorasButton = styled(StyledButton, {})({
     marginRight: "1rem",
     height: "2rem",
-    width: "9rem",
+    width: "6rem",
+    lineHeight: ".8rem",
     display: "flex",
-    fontSize: "0.8rem",
+    fontSize: "0.75rem",
+    fontWeight: "bold",
+    backgroundColor: "#08406e",
+    color: "#fff",
+    "&:hover":{backgroundColor: "#0c5591"}
+})
+
+export const TrashIcon = styled(FaTrashAlt, {})({
+    fontSize: "1.5rem",
+    marginRight: "1.5rem"
+})
+export const EditarStatusButton = styled(StyledButton, {})({
+    height: "2rem",
+    width: "6rem",
+    marginRight: ".7rem",
+    lineHeight: ".8rem",
+    display: "flex",
+    fontSize: "0.75rem",
+    fontWeight: "bold",
     backgroundColor: "#08406e",
     color: "#fff",
     "&:hover":{backgroundColor: "#0c5591"}

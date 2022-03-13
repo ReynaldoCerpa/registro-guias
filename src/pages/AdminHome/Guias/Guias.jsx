@@ -20,7 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
 import { guias } from "../../../db-conn/guides/getAllGuias";
-import { AddHorasButton } from "../../../components/Buttons";
+import { AddHorasButton, EditarStatusButton, TrashIcon } from "../../../components/Buttons";
 import { updateHours } from "../../../db-conn/guides/updateHours";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -28,6 +28,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import ModalAlert from "../../../components/ModalAlert"
+import { SettingsInputAntennaTwoTone } from "@mui/icons-material";
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
 
@@ -167,6 +169,7 @@ const Guias = () => {
   const [hours, setHours] = useState("");
   const [dialog, setDialog] = useState(false);
   const [alert, setAlert] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -311,11 +314,23 @@ const Guias = () => {
             </Tooltip>
           </div>
           <div className="agregar-horas-items">
+            <EditarStatusButton>
+              Editar estatus
+            </EditarStatusButton>
+            <TrashIcon
+              cursor={"pointer"}
+            />
             <input
               type="number"
               placeholder="Ingrese horas"
               value={hours}
               onInput={(e) => { setHours(e.target.value) }}
+            />
+            <ModalAlert 
+              isOpen={isOpen}
+              closeModal={()=>{
+                setIsOpen(false)
+              }}
             />
             <HorasTooltip
               title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
@@ -323,6 +338,8 @@ const Guias = () => {
                 onClick={() => {
                   if ((hours !== 0 && hours !== "") && selectedList.length !== 0) {
                     setDialog(true)
+                  } else {
+                    setIsOpen(true)
                   }
                 }}
               >

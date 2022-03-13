@@ -7,8 +7,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home/>} />
-        <Route exact path="/login" element={<Login/>} />
+{/*         <Route exact path="/" element={<Home/>} /> */}
+        <Route exact path="/" element={<Login/>} />
         <Route exact path="/AdminHome" element={<AdminHome/>} />
         <Route path="*" element={<h1>404 not found</h1>} />
       </Routes>
