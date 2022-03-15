@@ -54,7 +54,7 @@ export const AddHorasButton = styled(StyledButton, {})({
     "&:hover":{backgroundColor: "#0c5591"}
 })
 
-export const TrashIcon = styled(FaTrashAlt, {})({
+export const DeleteGuidesButton = styled(FaTrashAlt, {})({
     fontSize: "1.5rem",
     marginRight: "1.5rem"
 })

@@ -34,7 +34,7 @@ const style = {
     pb: 3,
 };
 
-export default function ModalUnstyledDemo({ isOpen, closeModal}) {
+export default function ModalUnstyledDemo({ isOpen, closeModal, text}) {
 
     return (
                 <div>
@@ -46,7 +46,7 @@ export default function ModalUnstyledDemo({ isOpen, closeModal}) {
                         BackdropComponent={Backdrop}
                     >
                         <Box sx={style}>
-                            <h2 id="unstyled-modal-title">Para agregar horas debe seleccionar guías e ingresar el número de horas</h2>
+                            <h2 id="unstyled-modal-title">{text}</h2>
                         </Box>
                     </StyledModal>
                 </div>
@@ -54,5 +54,6 @@ export default function ModalUnstyledDemo({ isOpen, closeModal}) {
 }
 
 ModalUnstyledDemo.defaultProps = {
-    isOpen: false
+    isOpen: false,
+    text: ""
 }

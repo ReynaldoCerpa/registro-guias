@@ -20,7 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { FiRefreshCcw } from "react-icons/fi"
 import { guias } from "../../../db-conn/guides/getAllGuias";
-import { AddHorasButton, EditarStatusButton, TrashIcon } from "../../../components/Buttons";
+import { AddHorasButton, EditarStatusButton, DeleteGuidesButton } from "../../../components/Buttons";
 import { updateHours } from "../../../db-conn/guides/updateHours";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -173,6 +173,7 @@ const Guias = () => {
   const [confirmationDialog, setConfirmationDialog] = useState(false);
   const [alert, setAlert] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [modalText, setModalText] = useState("")
 
   useEffect(() => {
     async function getData() {
@@ -333,11 +334,23 @@ const Guias = () => {
             <EditarStatusButton>
               Editar estatus
             </EditarStatusButton>
-            <TrashIcon
+            <DeleteGuidesButton
               cursor={"pointer"}
               onClick={()=>{
-                setConfirmationDialog(true);
+                if (selectedList.length !== 0) {
+                  setConfirmationDialog(true);
+                } else {
+                  setModalText("Seleccione guía(s) a eliminar")
+                  setIsOpen(true);
+                }
               }}
+            />
+            <ModalAlert 
+              isOpen={isOpen}
+              closeModal={()=>{
+                setIsOpen(false)
+              }}
+              text={modalText}
             />
             <ConfirmationDialog
               open={confirmationDialog}
@@ -353,12 +366,6 @@ const Guias = () => {
               value={hours}
               onInput={(e) => { setHours(e.target.value) }}
             />
-            <ModalAlert 
-              isOpen={isOpen}
-              closeModal={()=>{
-                setIsOpen(false)
-              }}
-            />
             <HorasTooltip
               title="Para agregar horas ingrese número positivo. Para restar horas ingrese número negativo." placement="top" arrow>
               <AddHorasButton
@@ -366,6 +373,7 @@ const Guias = () => {
                   if ((hours !== 0 && hours !== "") && selectedList.length !== 0) {
                     setDialog(true)
                   } else {
+                    setModalText("Para agregar horas seleccione guía(s) e ingrese cantidad de horas")
                     setIsOpen(true)
                   }
                 }}
